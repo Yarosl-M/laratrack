@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /* Actions in ticket (e. g. tag updates, closing/reopening, assigning ticket to an operator etc.) */
 class ThreadAction extends Model
 {
+    use HasUlids;
     use HasFactory;
-    protected $table = 'thread_action';
 }
