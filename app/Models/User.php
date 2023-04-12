@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Enums\UserType;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -33,5 +35,24 @@ class User extends Authenticatable
     public function scopeEmployees($query) {
         return $query->where('type', UserType::Operator->value)
         ->orWhere('type', UserType::Admin->value);
+    }
+
+    public function messages(): HasMany {
+        return $this->hasMany(Message::class, 'user_id');
+    }
+    public function permissions(): BelongsToMany {
+        return $this->belongsToMany(Permission::class);
+    }
+    public function thread_actions(): HasMany {
+        return $this->hasMany(ThreadAction::class, 'user_id');
+    }
+    public function thread_entries(): HasMany {
+        return $this->hasMany(ThreadEntry::class, 'user_id');
+    }
+    public function assigned_tickets(): HasMany {
+        return $this->hasMany(Ticket::class, 'assigned_to');
+    }
+    public function created_tickets(): HasMany {
+        return $this->hasMany(Ticket::class, 'client_id');
     }
 }
