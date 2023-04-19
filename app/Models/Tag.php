@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /* Tag of ticket */
 class Tag extends Model
 {
+    public $incrementing = false;
     use HasUlids;
     use HasFactory;
     public $timestamps = false;

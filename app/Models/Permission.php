@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /* User permission for access control */
 class Permission extends Model
 {
+    public $incrementing = false;
     use HasUlids;
     use HasFactory;
     public $timestamps = false;

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /* Actions in ticket (e. g. tag updates, closing/reopening, assigning ticket to an operator etc.) */
 class ThreadAction extends Model
 {
+    public $incrementing = false;
     use HasUlids;
     use HasFactory;
     public function ticket(): BelongsTo {

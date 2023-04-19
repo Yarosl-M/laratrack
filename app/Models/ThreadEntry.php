@@ -10,6 +10,7 @@ use Illuminate\Database\Events\ModelsPruned;
 /* Base table for thread actions and messages */
 class ThreadEntry extends ModelsPruned
 {
+    public $incrementing = false;
     use HasUlids;
     use HasFactory;
     protected $table = 'thread_entries';

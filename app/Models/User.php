@@ -16,6 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 /* A user of the system (including clients and operators and admins all together) */
 class User extends Authenticatable
 {
+    public $incrementing = false;
     use HasUlids;
     use HasApiTokens, HasFactory, Notifiable;
 
