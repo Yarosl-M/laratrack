@@ -10,6 +10,7 @@ use Illuminate\Database\Events\ModelsPruned;
 /* Base table for thread actions and messages */
 class ThreadEntry extends ModelsPruned
 {
+    protected $fillable = ['ticket_id', 'user_id'];
     public $incrementing = false;
     use HasUlids;
     use HasFactory;

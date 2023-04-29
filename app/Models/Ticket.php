@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /* A tech support ticket. */
 class Ticket extends Model
 {
+    protected $fillable = ['client_id', 'assigned_to', 'subject', 'priority_id', 'is_open', 'client_rating', 'archived_at'];
     public $incrementing = false;
     use HasUlids;
     use HasFactory;

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /* Client and operator messages in the ticket */
 class Message extends Model
 {
+    protected $fillable = ['ticket_id', 'user_id', 'content', 'attachments'];
     public $incrementing = false;
     use HasUlids;
     use HasFactory;
