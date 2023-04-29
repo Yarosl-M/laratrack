@@ -30,6 +30,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function hasPermission(string $permission): bool {
+        return $this->permissions()
+        // ->where('name', 'superuser')
+        // ->orWhere('name', $permission)
+        ->where('name', $permission)
+        ->get()->isNotEmpty();
+    }
+
     public function scopeClients($query) {
         return $query->where('type', UserType::Client->value);
     }
