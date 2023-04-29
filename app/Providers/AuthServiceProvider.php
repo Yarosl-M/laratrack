@@ -34,10 +34,7 @@ class AuthServiceProvider extends ServiceProvider
 
         foreach ($permNames as $p) {
             Gate::define($p, function(User $u) {
-                $superuser = $u->permissions()->firstWhere('name', 'superuser');
-                if (isset($superuser)) return true;
-                $permission = $u->permissions()->firstWhere('name', $p);
-                return isset($permission);
+                return $u->hasPermission('superuser') || $u->hasPermission($p);
             });
         }
     }
