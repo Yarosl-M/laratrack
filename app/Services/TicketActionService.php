@@ -66,4 +66,9 @@ class TicketActionService {
         ];
         return ThreadAction::create($fields);
     }
+
+    public function getActionsForTicket(Ticket $ticket, ActionType $type = null) {
+        if (isset($type)) return $ticket->thread_actions()->ofType($type)->get();
+        return $ticket->thread_actions()->get();
+    }
 }
