@@ -1,0 +1,31 @@
+/* Stylesheet applied to layout component (and consequently to all pages) */
+.head {
+    background-color: var(--secondary-color);
+    padding: 20px 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+}
+
+.head a {
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+}
+
+.navigation {
+    margin-right: auto;
+}
+
+.head .test {
+    background-color: aliceblue;
+    align-self: flex-end;
+}
+
+.head .nav-highlight {
+    background-color: var(--primary-color);
+    color: white;
+}

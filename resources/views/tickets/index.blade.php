@@ -1,0 +1,1 @@
+{{-- List all ticket (with pagination and stuff ofc) --}}

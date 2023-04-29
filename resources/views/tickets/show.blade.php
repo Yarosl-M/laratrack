@@ -1,0 +1,1 @@
+{{-- Show a single ticket page --}}
