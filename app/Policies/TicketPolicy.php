@@ -82,8 +82,7 @@ class TicketPolicy
      * Determine whether the user can archive the ticket.
      */
     public function archive(User $user, Ticket $ticket): bool {
-        return $ticket->archived_at === null &&
-        $this->view($user, $ticket) &&
+        return $this->view($user, $ticket) &&
         $user->hasPermission('archive_tickets');
     }
     /**
