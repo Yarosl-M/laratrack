@@ -2,7 +2,7 @@
 <html>
     <head>
         {{-- todo: make title change depending on the specific page (this is the default) --}}
-        <title>Тикет-система Wise Elephant</title>
+        <title>Тикет-система LaraTrack</title>
         <link rel="stylesheet" href="{{asset("css/style.css")}}">
         <link rel="stylesheet" href="{{asset("css/style_layout.css")}}">
     </head>
