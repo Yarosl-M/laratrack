@@ -46,7 +46,7 @@
                 {{-- @endauth --}}
             </nav>
             {{-- also user stuff like login button and whatever --}}
-            <div class="test">Lorem ipsum dolor sit amet</div>
+            <div class="test">Lorem ipsum dolor sit amet (user stuff)</div>
         </header>
         {{-- something else... --}}
         {{$slot}}
