@@ -5,6 +5,11 @@
         <title>Тикет-система LaraTrack</title>
         <link rel="stylesheet" href="{{asset("css/style.css")}}">
         <link rel="stylesheet" href="{{asset("css/style_layout.css")}}">
+        @if (isset($stylesheets))
+            @foreach ($stylesheets as $sheet)
+                <link rel="stylesheet" href="{{asset("css/" . $sheet . ".css")}}">
+            @endforeach
+        @endif
     </head>
     <body>
         <header class="head">
