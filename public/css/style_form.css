@@ -10,8 +10,15 @@ form {
     flex-wrap: nowrap;
     align-items: center;
 }
-form div {
-    margin-bottom: 1.5rem;
+form > div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+form > div > a {
+    text-decoration: none;
 }
 form > * {
     margin-top: 0.3rem;
@@ -31,4 +38,9 @@ button {
     text-align: center;
     width: max-content;
     align-self: center;
+}
+
+.required::after {
+    content: " *";
+    color: red;
 }

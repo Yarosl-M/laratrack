@@ -16,6 +16,8 @@ class UserService {
         $u->username = $createUser['username'];
         $u->email = $createUser['email'];
 
+        if (isset($createUser['name']) && !empty($createUser['name'])) $u->name = $createUser['name'];
+
         $hash = Hash::make($createUser['password']);
 
         $u->password = $hash;
