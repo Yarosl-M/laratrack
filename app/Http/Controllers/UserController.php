@@ -13,11 +13,11 @@ class UserController extends Controller
     public function __construct(private UserService $userService) {}
 
     public function create() {
-        return view('users.register');
+        return view('users.register', ['sheets' => ['style_form'], 'title' => 'Регистрация']);
     }
 
     public function login() {
-        return view('users.login');
+        return view('users.login', ['sheets' => ['style_form'], 'title' => 'Войти']);
     }
 
     public function store(RegisterRequest $request) {
@@ -31,8 +31,10 @@ class UserController extends Controller
     public function authenticate(AuthenticateRequest $request) {
         $attr = $request->safe()->only('email', 'password');
         if ($this->userService->authenticate($attr)) {
-            return 'Successfully signed in';
+            $request->session()->regenerate();
+
+            return redirect()->intended('/');
         }
-        else return 'Fail';
+        else return back()->withErrors(['auth' => 'Неправильные учётные данные']);
     }
 }

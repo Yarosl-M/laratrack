@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {{-- todo: make title change depending on the specific page (this is the default) --}}
-        <title>Тикет-система LaraTrack</title>
+        <title>
+            @isset($title)
+                {{$title . ' | '}}
+            @endisset
+            Тикет-система LaraTrack
+        </title>
         <link rel="stylesheet" href="{{asset("css/style.css")}}">
         <link rel="stylesheet" href="{{asset("css/style_layout.css")}}">
-        @if (isset($stylesheets))
+        @isset($stylesheets)
             @foreach ($stylesheets as $sheet)
                 <link rel="stylesheet" href="{{asset("css/" . $sheet . ".css")}}">
             @endforeach
-        @endif
+        @endisset
     </head>
     <body>
         <header class="head">
