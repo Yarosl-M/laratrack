@@ -20,9 +20,10 @@ class TicketController extends Controller
     }
 
     public function show(Ticket $ticket) {
-        $entries = $ticket->messages->concat($ticket->thread_actions)->sortBy('created_at');
-        $titleSubject = (strlen($ticket->subject) < 30) ? $ticket->subject :
-        (substr($ticket->subject, 0, 25) . '…');
+        $actions = $ticket->thread_actions;
+        $entries = $ticket->messages->concat($actions)->sortBy('created_at');
+        $titleSubject = (strlen($ticket->subject) < 25) ? $ticket->subject :
+        (substr($ticket->subject, 0, 20) . '…');
         return view('tickets.show', [
             'ticket' => $ticket,
             'entries' => $entries,
