@@ -38,6 +38,16 @@ class User extends Authenticatable
         ->get()->isNotEmpty();
     }
 
+    public function addPermission(string $permission) {
+        $permission = Permission::where('name', $permission)->get();
+        $this->permissions()->attach($permission->id);
+    }
+
+    public function removePermission(string $permission) {
+        $permission = Permission::where('name', $permission)->get();
+        $this->permissions()->detach($permission->id);
+    }
+
     public function scopeClients($query) {
         return $query->where('type', UserType::Client->value);
     }

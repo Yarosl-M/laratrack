@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\UserType;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
