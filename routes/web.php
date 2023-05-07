@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function () {
     return view('users.login');
 });
+
+// форма создания тикета
+Route::get('/tickets/create', [TicketController::class, 'create']);
+
+Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
+
+// прикреплённые к сообщениям файлы
+Route::get('/files/tickets/{ticket_id}/{message_id}/{file}', [FileController::class, 'getTicketAttachment']);
+
+Route::get('/files/users/{user_id}/{file}', [FileController::class, 'getProfilePicture']);
 
 // получить форму входа
 Route::get('/login', [UserController::class, 'login']);

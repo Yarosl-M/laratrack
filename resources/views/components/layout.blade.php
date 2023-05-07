@@ -9,6 +9,7 @@
         </title>
         <link rel="stylesheet" href="{{asset("css/style.css")}}">
         <link rel="stylesheet" href="{{asset("css/style_layout.css")}}">
+        <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
         @isset($stylesheets)
             @foreach ($stylesheets as $sheet)
                 <link rel="stylesheet" href="{{asset("css/" . $sheet . ".css")}}">
@@ -57,8 +58,8 @@
             {{-- also user stuff like login button and whatever --}}
             <div class="test">Lorem ipsum dolor sit amet (user stuff)</div>
         </header>
-        {{-- something else... --}}
-        {{$slot}}
-        {{-- something else too... --}}
+        <div class="container">
+            {{$slot}}
+        </div>
     </body>
 </html>

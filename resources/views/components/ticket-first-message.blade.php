@@ -14,7 +14,7 @@
                 @else
                     $message->user->username
                 @endif
-                <i> комментирует ({{$message->created_at->diffForHumans()}})</i></p>
+                <i> создаёт тикет ({{$message->created_at->diffForHumans()}})</i></p>
     </div>
     <p>
         {{$message->content}}
@@ -31,4 +31,4 @@
             @endforeach
         </ul>
     @endif
-
+</div>

@@ -6,8 +6,10 @@
     --secondary-color: #c8acfb;
 }
 
-body {
+body, html {
+    height: 100%;
     margin: 0;
+    padding: 0;
 }
 
 * {
