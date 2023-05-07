@@ -57,9 +57,9 @@ class TicketActionService {
     }
 
     private function createAction(ActionType $type, Ticket $ticket, User $user, array $action_params): ThreadAction {
+        $action_params['type'] = $type->value;
         $attr_json = json_encode($action_params);
         $fields = [
-            'type' => $type->value,
             'ticket_id' => $ticket->id,
             'user_id' => $user->id,
             'attributes' => $attr_json,
