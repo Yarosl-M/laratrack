@@ -1,6 +1,6 @@
 @props(['ticket', 'message'])
-<div class="message">
-    <div class="user-info" id="{{$message->id}}">
+<div class="message" id="{{$message->id}}">
+    <div class="user-info">
         @can('view', $message->user)
         <a href="{{url('/users', [$message->user_id])}}">
         @endcan
@@ -10,9 +10,9 @@
         @endcan
             <p>
                 @if (isset($message->user->name))
-                    $message->user->name
+                    {{$message->user->name}}
                 @else
-                    $message->user->username
+                    {{$message->user->username}}
                 @endif
                 <i> комментирует ({{$message->created_at->diffForHumans()}})</i></p>
     </div>
@@ -24,7 +24,7 @@
         <ul class="bordered">
             @foreach (json_decode($message->attachments) as $filename)
                 <li>
-                    <a href="{{url('/', ['files', 'tickets', $ticket->id, $message->id, $filename])}}">
+                    <a href="{{url('/', ['storage', 'tickets', $ticket->id, $message->id, $filename])}}">
                         {{$filename}}
                     </a>
                 </li>

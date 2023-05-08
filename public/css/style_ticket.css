@@ -19,7 +19,7 @@ ul li {
     flex-direction: row;
     gap: 1rem;
 }
-.message, .action {
+.message, .action, .msg-form {
     width: 90%;
     border-style: solid;
     border-width: 2px;
@@ -32,6 +32,12 @@ ul li {
 .attachments-header {
     font-size: 0.95em;
     color: #777;
+}
+.msg-form {
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap:0.6rem;
 }
 .tag, .priority {
     background-color: var(--primary-color);
@@ -46,4 +52,9 @@ ul li {
 }
 .user-info p>i {
     color: #555;
+}
+
+.msg-form textarea {
+    height:10rem;
+    width: 50%;
 }

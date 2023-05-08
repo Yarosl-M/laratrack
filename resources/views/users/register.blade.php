@@ -1,6 +1,9 @@
 {{-- @php
     $sheets = ['style_form'];
 @endphp --}}
+@php
+    use App\Models\Ticket;
+@endphp
 <x-layout :stylesheets="$sheets" :title="$title">
     <h1>Регистрация</h1>
     <form class="bordered" action="/users" method="POST">
