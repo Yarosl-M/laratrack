@@ -39,12 +39,12 @@ class User extends Authenticatable
     }
 
     public function addPermission(string $permission) {
-        $permission = Permission::where('name', $permission)->get();
+        $permission = Permission::where('name', $permission)->first();
         $this->permissions()->attach($permission->id);
     }
 
     public function removePermission(string $permission) {
-        $permission = Permission::where('name', $permission)->get();
+        $permission = Permission::where('name', $permission)->first();
         $this->permissions()->detach($permission->id);
     }
 

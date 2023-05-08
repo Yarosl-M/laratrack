@@ -3,6 +3,8 @@
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
+use App\Http\Requests\CreateTicketRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,8 @@ Route::get('/test', function () {
 Route::get('/tickets/create', [TicketController::class, 'create']);
 
 Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
+
+Route::post('/tickets', [TicketController::class, 'store']);
 
 // прикреплённые к сообщениям файлы
 Route::get('/files/tickets/{ticket_id}/{message_id}/{file}', [FileController::class, 'getTicketAttachment']);

@@ -12,7 +12,8 @@ class CreateTicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('create', Ticket::class);
+        // return $this->user()->can('create', Ticket::class);
+        return true;
     }
 
     /**
@@ -24,7 +25,8 @@ class CreateTicketRequest extends FormRequest
     {
         return [
             'subject' => 'bail|required|max:100',
-            'content' => 'bail|required|max:1000'
+            'content' => 'bail|required|max:1000',
+            'files.*' => 'bail|max:5120|mimes:jpg,jpeg,png,gif,bmp,doc,docx,txt,pdf,rtf',
         ];
     }
 }

@@ -5,7 +5,8 @@
 @endphp --}}
 <x-layout :stylesheets="$sheets" :title="$title">
     <template id="filetemplate">
-        <input type="file" name="attachments[]"/>
+        <input type="file" name="attachments[]"
+        accept="image/*,text/plain"/>
     </template>
     <header>
         <h1>Создать новый тикет</h1>
@@ -18,28 +19,34 @@
             <textarea placeholder="Опишите подробно возникшую у Вас проблему…" name="content"
             >{{old('content')}}</textarea>
             <label for="attachments">При необходимости прикрепите файлы</label>
-            <input type="file" name="attachments[]" id="files" multiple/>
+            <input type="file" name="attachments[]"
+            accept="image/*,text/plain"/>
             <button type="submit">Создать</button>
     </form>
 
     <script>
         const fileLimit = 5;
         var fileAmount = 1;
+        var fileHtml = $('#filetemplate').html().trim();
+        function addFileInput() {
+            if (fileAmount < fileLimit) {
+                var input = $.parseHTML(fileHtml);
+                $('input[type="file"]').last().after(input);
+                $('input[type="file"]').last().one('change', addFileInput);
+                fileAmount++;
+            }
+        }
         $(document).ready(function() {
-            // no wait this is all bs (maybe?) 
-            // why do we even need to iterate each time a new file is added if we only need to 
-            // add a new one each time we upload a file
-            $('#files').on('change', function() {
-
-                // let files = $(this).get(0)>.files;
-                // if (files.length > 0) {
-                //     for (let i = 0; i < files.length; i++) {
-                //         let input = $($.parseHTML($('#filetemplate').html()));
-                //         input.attr('id', 'file' + String(4));
-                //         $('#files')
-                //     }
-                // }
-            })
+            $('input[name="attachments[]"]').last().one("change", addFileInput);
+            //     // let files = $(this).get(0)>.files;
+            //     // if (files.length > 0) {
+            //     //     for (let i = 0; i < files.length; i++) {
+            //     //         let input = $($.parseHTML($('#filetemplate').html()));
+            //     //         input.attr('id', 'file' + String(4));
+            //     //         $('#files')
+            //     //     }
+            //     // }
+            // })
         });
     </script>
 </x-layout>
