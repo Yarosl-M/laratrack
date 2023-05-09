@@ -12,6 +12,11 @@ class TicketController extends Controller
 {
     public function __construct(private TicketService $ticketServiee) {}
 
+    public function index(Request $request) {
+        return view('tickets.index', 
+    ['tickets' => Ticket::latest()->paginate(10)]);
+    }
+
     public function create() {
         return view('tickets.create', ['sheets' => ['style_form', 'test'], 'title' => 'Создать тикет']);
     }

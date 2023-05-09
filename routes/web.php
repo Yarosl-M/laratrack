@@ -22,6 +22,11 @@ Route::get('/test', function () {
     return view('users.login');
 });
 
+// for now
+Route::get('/', [TicketController::class, 'index']);
+
+Route::get('/tickets', [TicketController::class, 'index']);
+
 // форма создания тикета
 Route::get('/tickets/create', [TicketController::class, 'create']);
 

@@ -1,0 +1,29 @@
+.ticket-list {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .ticket-list { margin-top: 0; }
+}
+@media (min-width: 1024px) {
+    .ticket-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.ticket-card {
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #bbb;
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+}
+
+
+.ticket-card a {
+    text-decoration: none;
+}
