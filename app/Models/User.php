@@ -38,6 +38,10 @@ class User extends Authenticatable
         ->get()->isNotEmpty();
     }
 
+    public function displayName(): string {
+        return isset($this->name) ? $this->name : $this->username;
+    }
+
     public function addPermission(string $permission) {
         $permission = Permission::where('name', $permission)->first();
         $this->permissions()->attach($permission->id);
