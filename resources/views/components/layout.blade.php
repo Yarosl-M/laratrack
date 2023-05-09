@@ -33,7 +33,7 @@
                 {{-- @auth --}}
                     <div> <!-- LOGO AND NAVIGATION -->
                         @auth
-                            @switch(Auth::user()->class)
+                            @switch(Auth::user()->type)
                             @case('client')
                                 <x-nav-client/>
                                 @break
@@ -55,9 +55,12 @@
             </nav>
             <nav class="user">
                 @auth
-                        <img class="pfp" src="https://cdn.discordapp.com/attachments/1085284239815217182/1104351697335230564/j01.png">
+                        {{-- <img class="pfp" src="https://cdn.discordapp.com/attachments/1085284239815217182/1104351697335230564/j01.png"> --}}
+                        <x-user-pfp :user="auth()->user()" :size="2.5"/>
                         <p style="display:inline-block;">Добро пожаловать, {{Auth::user()->displayName()}}</p>
-                        <a href="/account"><img style="width:2rem;height:2rem;" src="/assets/settings.svg" alt="Настройки аккаунта"></a>
+                        <a href="/account">
+                            <img style="width:2rem;height:2rem;" src="/assets/settings.svg" alt="Настройки аккаунта">
+                        </a>
                         {{-- maybe do it with a form instead and post request? --}}
                         <form action="/logout" method="post">
                             @csrf
