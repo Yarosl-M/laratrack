@@ -38,6 +38,8 @@ Route::get('/files/users/{user_id}/{file}', [FileController::class, 'getProfileP
 Route::get('/login', [UserController::class, 'login']);
 // получить форму регистрации
 Route::get('/register', [UserController::class, 'create']);
+
+Route::post('/logout', [UserController::class, 'logout']);
 // зарегистрироваться
 Route::post('/users', [UserController::class, 'store']);
 // войти в систему

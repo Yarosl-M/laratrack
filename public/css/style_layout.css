@@ -12,7 +12,12 @@ body {
     align-items: baseline;
 }
 
-.head a {
+.logo a {
+    color: black;
+    text-decoration: none;
+}
+
+.navlink, .nav-highlight {
     display: inline-block;
     text-align: center;
     padding: 10px;
@@ -27,6 +32,13 @@ body {
     margin-left: 20px;
 }
 
+.user {
+    display:flex;
+    align-items: center;
+    gap: 0.7rem;
+    align-self: flex-end;
+}
+
 .container {
     padding:8px;
     flex-grow: 1;
@@ -36,12 +48,21 @@ body {
     margin-block-start: 0;
 }
 
-.head .test {
-    background-color: aliceblue;
-    align-self: flex-end;
-}
-
-.head .nav-highlight {
+.nav-highlight {
     background-color: var(--primary-color);
     color: white;
+}
+.user .pfp {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+
+.user > form {
+    all: unset;
+    display: inline;
+}
+.user > form > button {
+    all: unset;
+    cursor: pointer;
 }

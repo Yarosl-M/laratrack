@@ -6,6 +6,7 @@ use App\Http\Requests\AuthenticateRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -36,5 +37,11 @@ class UserController extends Controller
             return redirect()->intended('/');
         }
         else return back()->withErrors(['auth' => 'Неправильные учётные данные']);
+    }
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

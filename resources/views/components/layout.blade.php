@@ -32,31 +32,46 @@
                 <a href="/tickets">Панель управления</a> --}}
                 {{-- @auth --}}
                     <div> <!-- LOGO AND NAVIGATION -->
-                        {{-- @switch(Auth::user()->class)
+                        @auth
+                            @switch(Auth::user()->class)
                             @case('client')
-                            <a href="/tickets/create" class="nav-highlight">Создать тикет</a>
-                            <a href="/mytickets">Мои тикеты</a>
+                                <x-nav-client/>
                                 @break
-                            @case('operator') --}}
-                            {{-- TOODO: sort out the permission stuff --}}
-                            <a href="/tickets">Тикеты</a>
-                            <a href="/tickets/archive">Архив</a>
-                            {{-- TODO: архивные тикеты (на той же странице?) --}}
-                            <a href="/tickets" class="nav-highlight">Мои тикеты</a>
-                                {{-- @break
+                            @case('operator')
+                                <x-nav-op/>
+                                @break
                             @case('admin')
-                            <a href="/tickets">Тикеты</a>
-                            <a href="/tickets/archive">Архив</a>
-                            <a href="/tickets" class="nav-highlight">Мои тикеты</a>
-                            <a href="/tickets">Панель управления</a>
+                                <x-nav-admin/>
                                 @break
-                            @default    
-                        @endswitch --}}
+                            @default
+                                @break
+                            @endswitch
+                        @endauth
+                        @guest
+                            <x-nav-guest/>
+                        @endguest
                     </div> <!-- LOGO AND NAVIGATION -->
                 {{-- @endauth --}}
             </nav>
-            {{-- also user stuff like login button and whatever --}}
-            <div class="test">Lorem ipsum dolor sit amet (user stuff)</div>
+            <nav class="user">
+                @auth
+                        <img class="pfp" src="https://cdn.discordapp.com/attachments/1085284239815217182/1104351697335230564/j01.png">
+                        <p style="display:inline-block;">Добро пожаловать, {{Auth::user()->displayName()}}</p>
+                        <a href="/account"><img style="width:2rem;height:2rem;" src="/assets/settings.svg" alt="Настройки аккаунта"></a>
+                        {{-- maybe do it with a form instead and post request? --}}
+                        <form action="/logout" method="post">
+                            @csrf
+                            <button type="submit">
+                                <img style="width:2rem;height:2rem;" src="/assets/logout.svg" alt="Выйти">
+                            </button>
+                        </form>
+                @endauth
+                @guest
+                    <i style="display:inline-block;font-size:0.9rem;">Вы не вошли в систему</i>
+                    <a class="navlink" href="/login">Войти</a>
+                    <a class="nav-highlight" href="/register">Зарегистрироваться</a>
+                @endguest
+            </nav>
         </header>
         <div class="container">
             {{$slot}}
