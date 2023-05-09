@@ -33,6 +33,12 @@ class Ticket extends Model
         return $query->where('is_open', 'false');
     }
 
+    public function scopeFilter($query, array $filters) {
+        if ($filters['search'] ?? false) {
+            return $query->where('subject', 'like', '%' . $filters['search'] . '%');
+        }
+    }
+
     public function assignedTo($query, User $user) {
         return $query->where('assigned_to', $user->id);
     }

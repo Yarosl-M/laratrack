@@ -13,8 +13,8 @@ class TicketController extends Controller
     public function __construct(private TicketService $ticketServiee) {}
 
     public function index(Request $request) {
-        return view('tickets.index', 
-    ['tickets' => Ticket::latest()->paginate(10)]);
+        return view('tickets.index',
+    ['tickets' => Ticket::latest()->active()->filter(['search' => $request->query('search')])->paginate(10)]);
     }
 
     public function create() {
