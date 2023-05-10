@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTicketRequest;
 use App\Models\Message;
+use App\Models\Priority;
 use App\Models\Ticket;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class TicketController extends Controller
         $ticket = new Ticket();
         $ticket->subject = $ticketAttr['subject'];
         $ticket->client_id = $ticketAttr['client_id'];
+        $ticket->priority_id = Priority::where('name', 'Не установлен')->first()->id;
         $ticket->save();
 
         $firstMessageAttr = $request->safe()->only('content');
