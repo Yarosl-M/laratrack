@@ -38,7 +38,7 @@ class TicketPolicy
      */
     public function send_message(User $user, Ticket $ticket): bool {
         if ($ticket->archived_at !== null) return false;
-        return $this->view($user, $ticket)
+        return $this->view($user, $ticket) &&
         ($user->hasPermission('send_messages_client') && $ticket->client_id === $user->id ||
         $user->hasPermission('send_messages_operator'));
     }
