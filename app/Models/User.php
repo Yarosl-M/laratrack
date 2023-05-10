@@ -52,6 +52,10 @@ class User extends Authenticatable
         $this->permissions()->detach($permission->id);
     }
 
+    public function scopeActive($query) {
+        return $query->whereNull('deactivated_at');
+    }
+
     public function scopeClients($query) {
         return $query->where('type', UserType::Client->value);
     }
