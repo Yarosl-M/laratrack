@@ -19,10 +19,10 @@
     <p>
         {{$message->content}}
     </p>
-    @if (!empty(json_decode($message->attachments)))
+    @if (!empty(json_decode($message->attachments, true)))
         <p class="attachments-header">Прикреплённые файлы:</p>
         <ul class="bordered">
-            @foreach (json_decode($message->attachments) as $filename)
+            @foreach (json_decode($message->attachments, true) as $filename)
                 <li>
                     <a href="{{url('/', ['storage', 'tickets', $ticket->id, $message->id, $filename])}}">
                         {{$filename}}

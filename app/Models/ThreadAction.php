@@ -24,7 +24,7 @@ class ThreadAction extends Model
     public function attributes(): Attribute {
         return Attribute::make(
             get: function(string $json) {
-                $attr = json_decode($json);
+                $attr = json_decode($json, true);
                 switch ($attr['type']) {
                     case 'tags_changed':
                         $tags = [];
