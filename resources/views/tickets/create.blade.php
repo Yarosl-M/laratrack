@@ -38,15 +38,6 @@
         }
         $(document).ready(function() {
             $('input[name="attachments[]"]').last().one("change", addFileInput);
-            //     // let files = $(this).get(0)>.files;
-            //     // if (files.length > 0) {
-            //     //     for (let i = 0; i < files.length; i++) {
-            //     //         let input = $($.parseHTML($('#filetemplate').html()));
-            //     //         input.attr('id', 'file' + String(4));
-            //     //         $('#files')
-            //     //     }
-            //     // }
-            // })
         });
     </script>
 </x-layout>
