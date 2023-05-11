@@ -35,7 +35,7 @@ class Ticket extends Model
 
     public function scopeFilter($query, array $filters) {
         if ($filters['search'] ?? false) {
-            return $query->where('subject', 'like', '%' . $filters['search'] . '%');
+            return $query->where('subject', 'ilike', '%' . $filters['search'] . '%');
         }
     }
 
