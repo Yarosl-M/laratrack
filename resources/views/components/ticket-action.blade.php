@@ -69,6 +69,6 @@
                 @break
             @default
         @endswitch
-        <i>({{$action->createdAt->diffForHumans()}})</i>
+        <i>({{$action->created_at->diffForHumans()}})</i>
     </p>
 </div>
