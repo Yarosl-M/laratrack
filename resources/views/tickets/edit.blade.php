@@ -1,1 +1,0 @@
-<!-- Edit an existing ticket (assign operators, change tags etc.) -->
