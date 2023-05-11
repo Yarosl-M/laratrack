@@ -1,10 +1,9 @@
 @props(['ticket', 'action'])
-</div>
 <div class="action" id="{{$action->id}}">
     @can('view', $action->user)
-        <a href="{{url('/users', [$action->user_id])}}">
+        <a class="user-pfp-link" href="{{url('/users', [$action->user_id])}}">
     @endcan
-    <img class="pfp" src="{{url('/files/users', [$action->user->id, $action->user->profile_picture])}}">
+    <x-user-pfp :user="($ticket->user)" :size="3"/>
     @can('view', $action->user)
         </a>
     @endcan
@@ -69,6 +68,7 @@
                 @break
             @default
         @endswitch
-        <i>({{$action->created_at->diffForHumans()}})</i>
+        {{-- make a # link and add to css --}}
+        <a class="time-link no-underline hover-underline" href="#{{$action->id}}">({{$action->created_at->diffForHumans()}})</a>
     </p>
 </div>

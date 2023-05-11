@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTicketRequest;
 use App\Models\Message;
 use App\Models\Priority;
+use App\Models\Tag;
 use App\Models\Ticket;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function __construct(private TicketService $ticketServiee) {}
+    public function __construct(private TicketService $ticketService) {}
 
     public function index(Request $request) {
         return view('tickets.index',
@@ -65,6 +66,39 @@ class TicketController extends Controller
             $message->attachments = json_encode($attachments);
             $message->save();
         }
+
+        return redirect('/tickets/' . $ticket->id);
+    }
+
+    public function update(Request $request, Ticket $ticket) {
+        $keys = array_keys($request->all());
+        $updateTicket = [];
+
+        $reqTags = collect(array_filter($keys, fn($k) => str_starts_with($k, 'tag-')))
+        ->map(fn($t) => substr($t, 4))->toArray();
+        $ticketTags = $ticket->tags()->get()->pluck('id')->toArray();
+        // check if any tags were actually modified
+        if (count($reqTags) !== count($ticketTags) || count(array_intersect($reqTags, $ticketTags)) !== count($reqTags)) {
+            $updateTicket['tags'] = $reqTags;
+        }
+
+        $pid = substr($request->input('priority'), 2);
+        if ($pid !== $ticket->priority_id) {
+            $updateTicket['priority_id'] = $pid;
+        }
+
+        // old null, new null => no action
+        // old null, new not null => assign
+        // old not null, new null => unassign
+        // old not null, new not null => check, assign if different
+        $aid = $request->input('assignee');
+        if ($aid != $ticket->assigned_to) {
+            // this if-block is skipping cases 1 and 4-same
+            // and actually since we can pass null to the service, we skip everything else too
+            $updateTicket['assigned_to'] = $aid;
+        }
+
+        $this->ticketService->updateTicket($ticket->id, $updateTicket);
 
         return redirect('/tickets/' . $ticket->id);
     }

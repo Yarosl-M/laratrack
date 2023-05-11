@@ -23,6 +23,14 @@ body, html {
     border-radius: 8px;
 }
 
+.no-underline {
+    text-decoration: none;
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
+}
+
 .error {
     color: #d00;
     font-size: 0.9rem;

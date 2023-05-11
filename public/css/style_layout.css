@@ -58,6 +58,10 @@ body {
     border-radius: 50%;
 }
 
+.user-pfp-link {
+    color: black;
+}
+
 .user > form {
     all: unset;
     display: inline;

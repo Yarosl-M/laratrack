@@ -29,8 +29,13 @@ Route::get('/tickets', [TicketController::class, 'index']);
 
 // форма создания тикета
 Route::get('/tickets/create', [TicketController::class, 'create']);
-
+// страница тикета
 Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
+
+// открыть параметры тикета
+Route::get('/tickets/{ticket}/settings', [TicketController::class, 'settings']);
+// сохранить параметры тикета
+Route::post('/tickets/{ticket}/settings', [TicketController::class, 'update']);
 
 Route::post('/tickets', [TicketController::class, 'store']);
 
