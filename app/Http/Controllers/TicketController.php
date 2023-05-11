@@ -22,6 +22,13 @@ class TicketController extends Controller
         return view('tickets.create', ['sheets' => ['style_form', 'test'], 'title' => 'Создать тикет']);
     }
 
+    public function settings(Ticket $ticket) {
+        $titleSubject = (strlen($ticket->subject) < 25) ? $ticket->subject :
+        (substr($ticket->subject, 0, 20) . '…');
+        return view('tickets.settings', ['ticket' => $ticket, 'sheets' => ['style_ticket_settings'],
+        'title' => $titleSubject]);
+    }
+
     public function store(CreateTicketRequest $request) {
         /**
          * subject
