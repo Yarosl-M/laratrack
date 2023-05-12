@@ -25,7 +25,9 @@
             @endif
         @endforeach
         </section>
-        <x-message-form :ticket="$ticket"/>    
+        @unless ($ticket->archived_to != null)
+            <x-message-form :ticket="$ticket"/>    
+        @endunless
     </section>
     <section class="sidebar">
         <h3>Сведения о тикете</h3>
@@ -61,8 +63,10 @@
             Ответственный сотрудник не назначен
         </span>
         @endif
-        <a class="sidebar-link" href="/tickets/{{$ticket->id}}/settings">Параметры тикета…</a>
-        <a href="#" class="sidebar-link">В архив</a>
-        <a href="#" class="sidebar-link link-delete">Удалить тикет</a>
+        @unless ($ticket->archived_to != null)
+            <a class="sidebar-link" href="/tickets/{{$ticket->id}}/settings">Параметры тикета…</a>
+            <a href="#" class="sidebar-link">В архив</a>
+            <a href="#" class="sidebar-link link-delete">Удалить тикет</a>
+        @endunless
     </section>
 </x-layout>

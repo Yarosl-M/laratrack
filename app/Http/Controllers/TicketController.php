@@ -20,6 +20,11 @@ class TicketController extends Controller
     ['tickets' => Ticket::latest()->active()->filter(['search' => $request->query('search')])->paginate(10)]);
     }
 
+    public function archive(Request $request) {
+        return view('tickets.index-archive',
+    ['tickets' => Ticket::latest()->archived()->filter(['search' => $request->query('search')])->paginate(10)]);
+    }
+
     public function create() {
     //     return gettype(view('components.user-pfp', ['user' => User::first()])
     // ->render());

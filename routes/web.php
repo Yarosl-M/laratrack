@@ -27,6 +27,8 @@ Route::get('/', [TicketController::class, 'index']);
 
 Route::get('/tickets', [TicketController::class, 'index']);
 
+Route::get('/tickets/archive', [TicketController::class, 'archive']);
+
 // форма создания тикета
 Route::get('/tickets/create', [TicketController::class, 'create']);
 // страница тикета
