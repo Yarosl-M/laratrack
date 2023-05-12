@@ -44,19 +44,16 @@
 
                 // 
                 $.ajax({
-                    url: '/api/tickets/{{$ticket->id}}/comment',
-                    method: 'POST',
-                    dataType: 'json',
+                    url: '{{url("/api/tickets/".{{$ticket->id}}."/comment")}}',
                     contentType: false,
-                    processData: false,
                     data: formData,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': csrf
-                    },
+                    headers: { 'X-CSRF-TOKEN': csrf },
+                    xhrFields: { withCredentials: true },
+                    dataType: 'json',
+                    processData: false,
+                    method: 'POST',
                     success: function(data) {
+                        $('textarea[name="message-text"]').val('');
                         console.log(data);
                         var html = data.html;
                         $('.ticket-items').append(html);

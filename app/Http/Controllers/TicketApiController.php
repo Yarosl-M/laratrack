@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddMessageRequest;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class TicketApiController extends Controller {
             [
                 'ticket_id' => $ticket->id,
                 'user_id' => $request->user()->id,
+                // 'user_id' => User::first()->id,
                 'content' => ($request->safe()->only('content'))['content'],
                 'files' => $filenames,
             ]);
@@ -40,7 +42,6 @@ class TicketApiController extends Controller {
             'message' => $m,
         ]);
         $html = $component->render();
-        dd($html);
         return response()->json([
             'html' => $html,
         ]);

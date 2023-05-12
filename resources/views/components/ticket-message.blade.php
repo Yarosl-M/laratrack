@@ -31,4 +31,4 @@
             @endforeach
         </ul>
     @endif
-
+</div>
