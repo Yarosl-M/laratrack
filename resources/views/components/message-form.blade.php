@@ -42,6 +42,7 @@
                     f.append('attachments', file);
                 }
 
+                // 
                 $.ajax({
                     url: '/api/tickets/{{$ticket->id}}/comment',
                     method: 'POST',
