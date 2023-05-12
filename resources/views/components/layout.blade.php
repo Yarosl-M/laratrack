@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>
             @isset($title)
                 {{$title . ' | '}}
@@ -48,7 +49,7 @@
                             @endswitch
                         @endauth
                         @guest
-                            <x-nav-guest/>
+                            {{-- <x-nav-guest/> --}}
                         @endguest
                     </div> <!-- LOGO AND NAVIGATION -->
                 {{-- @endauth --}}

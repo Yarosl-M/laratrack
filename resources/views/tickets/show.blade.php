@@ -12,7 +12,8 @@
         <h1>
             {{$ticket->subject}}
         </h1>
-        @foreach ($entries as $e)
+        <section class="ticket-items">
+            @foreach ($entries as $e)
             @if ($e::class === Message::class)
                 @if ($loop->first)
                     <x-ticket-first-message :ticket="$ticket" :message="$e"/>
@@ -23,6 +24,7 @@
                 <x-ticket-action :ticket="$ticket" :action="$e"/>
             @endif
         @endforeach
+        </section>
         <x-message-form :ticket="$ticket"/>    
     </section>
     <section class="sidebar">

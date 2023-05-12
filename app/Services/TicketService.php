@@ -100,8 +100,20 @@ class TicketService {
         return $ticket;
     }
 
-    
-
+    public function addMessage(array $messageAttr): Message {
+        // ticket id (str)
+        // also user id (str)
+        // content (str)
+        // files (arr of str)
+        $m = new Message;
+        $m->ticket_id = $messageAttr['ticket_id'];
+        $m->user_id = $messageAttr['user_id'];
+        $m->content = $messageAttr['content'];
+        $files_json = json_encode($messageAttr['files']);
+        $m->attachments = $files_json;
+        $m->save();
+        return $m;
+    }
 
     public function archiveTicket(string $id): Ticket {
         $ticket = Ticket::find($id);

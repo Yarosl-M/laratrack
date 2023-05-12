@@ -23,6 +23,7 @@ class AddMessageRequest extends FormRequest
     {
         return [
             'content' => 'bail|required|max:1000',
+            'files' => 'nullable|bail|array|max:5',
             'files.*' => 'bail|max:5120|mimes:jpg,jpeg,png,gif,bmp,doc,docx,txt,pdf,rtf',
         ];
     }

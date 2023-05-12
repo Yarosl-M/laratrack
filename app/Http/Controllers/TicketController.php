@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\Priority;
 use App\Models\Tag;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,8 @@ class TicketController extends Controller
     }
 
     public function create() {
+    //     return gettype(view('components.user-pfp', ['user' => User::first()])
+    // ->render());
         return view('tickets.create', ['sheets' => ['style_form', 'test'], 'title' => 'Создать тикет']);
     }
 
@@ -54,7 +57,7 @@ class TicketController extends Controller
         $message->ticket_id = $firstMessageAttr['ticket_id'];
         $message->content = $firstMessageAttr['content'];
         $message->save();
-
+        
         if ($request->hasFile('attachments')) {
             $files = $request->file('attachments');
             $attachments = [];

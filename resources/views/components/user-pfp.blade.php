@@ -1,7 +1,7 @@
 @props(['user', 'size'])
-@if (!isset($size))
-    $size = 3;
-@endif
+@php
+    $size = $size ?? 3;
+@endphp
 @if (isset($user->profile_picture))
     <img style="width:{{$size}}rem;height:{{$size}}rem;border-radius:50%;" src="/storage/users/{{$user->id}}/{{$user->profile_picture}}">
 @else
