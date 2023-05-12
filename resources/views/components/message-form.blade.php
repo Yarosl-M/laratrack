@@ -44,7 +44,7 @@
 
                 // 
                 $.ajax({
-                    url: '{{url("/api/tickets/".{{$ticket->id}}."/comment")}}',
+                    url: '{{url("/api/tickets/".$ticket->id."/comment")}}',
                     contentType: false,
                     data: formData,
                     headers: { 'X-CSRF-TOKEN': csrf },

@@ -56,3 +56,5 @@ Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/users', [UserController::class, 'store']);
 // войти в систему
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+
+Route::get('/account', [UserController::class, 'edit']);

@@ -119,7 +119,7 @@ class TicketController extends Controller
         return view('tickets.show', [
             'ticket' => $ticket,
             'entries' => $entries,
-            'sheets' => ['style_ticket'],
+            'sheets' => ['style_ticket', 'style_sidebar'],
             'title' => $titleSubject,
         ]);
     }

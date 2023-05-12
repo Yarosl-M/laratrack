@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthenticateRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,10 @@ class UserController extends Controller
         $attr['username'] = Str::lower($attr['username']);
         $u = $this->userService->create($attr);
         dd($u);
+        }
+
+        public function edit(Request $request) {
+            return view('users.edit', ['user' => $request->user()]);
         }
 
     public function authenticate(AuthenticateRequest $request) {
