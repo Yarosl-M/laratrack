@@ -26,7 +26,7 @@
         <ul class="bordered">
             @foreach (json_decode($message->attachments, true) as $filename)
                 <li>
-                    <a href="{{url('/', ['storage', 'tickets', $ticket->id, $message->id, $filename])}}">
+                    <a target="_blank" href="{{url('/', ['storage', 'tickets', $ticket->id, $message->id, $filename])}}">
                         {{$filename}}
                     </a>
                 </li>
