@@ -28,11 +28,10 @@ class UserController extends Controller
     }
 
     public function store(RegisterRequest $request) {
-        // TODO: figure out where and how to validate
-        $attr = $request->safe()->only('email', 'username', 'password', 'name');
-        $attr['username'] = Str::lower($attr['username']);
-        $u = $this->userService->create($attr);
-        dd($u);
+            $attr = $request->safe()->only('email', 'username', 'password', 'name');
+            $attr['username'] = Str::lower($attr['username']);
+            $u = $this->userService->create($attr);
+            return redirect('/');
         }
 
     public function edit(Request $request) {
