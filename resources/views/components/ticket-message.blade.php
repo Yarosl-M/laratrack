@@ -2,9 +2,9 @@
 <div class="message" id="{{$message->id}}">
     <div class="user-info">
         @can('view', $message->user)
-        <a href="{{url('/users', [$message->user_id])}}">
+        <a class="user-pfp-link" href="{{url('/users', [$message->user_id])}}">
         @endcan
-            <img class="pfp" src="https://cdn.discordapp.com/attachments/1085284239815217182/1104351697335230564/j01.png">
+            <x-user-pfp :user="$message->user" :size="3"/>
         @can('view', $message->user)
         </a>
         @endcan
