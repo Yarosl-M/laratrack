@@ -39,7 +39,7 @@ $title = $user->displayName();
             <div class="bordered section assigned-tickets">
                 <h3>Назначенные тикеты</h3>
                 @if ($user->assigned_tickets->isEmpty())
-                    Вам не назнчено тикетов.
+                    Вам не назначено тикетов.
                 @else
                 <div class="assigned-ticket-list">
                     @foreach ($user->assigned_tickets as $ticket)
