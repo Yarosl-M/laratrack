@@ -40,4 +40,12 @@ class UserService {
         $user->save();
         return true;
     }
+
+    public function changeAccountSettings(User $user, string|null $name, string $email) {
+        $user->name = $name;
+        $user->email = $email;
+        $user->save();
+        // ???
+        return $user;
+    }
 }

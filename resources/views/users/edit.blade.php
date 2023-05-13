@@ -10,7 +10,7 @@ $title = $user->displayName();
             <div style="display:flex;flex-direction:row;">
                 <div class="bordered section">
                     <h3>Учётные данные</h3>
-                    <form method="POST" class="account-settings">
+                    <form method="POST" action="/account/update" class="account-settings">
                         @csrf
                         <label class="username-label">Имя пользователя (Вы не можете его изменить)</label>
                         <input class="username" type="text" disabled readonly value="{{$user->username}}">
