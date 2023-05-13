@@ -55,7 +55,7 @@ class UserController extends Controller
         public function update_pfp(Request $request) {
             $user = $request->user();
             $formFields = $request->validate([
-                'pfp' => 'bail|required|mimes:png,jpg,jpeg|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000'
+                'pfp' => 'bail|required|max:3072|mimes:png,jpg,jpeg|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000'
             ]);
             $filename = basename($request->file('pfp')->store('/public/users/' . $user->id));
             $user->profile_picture = $filename;
