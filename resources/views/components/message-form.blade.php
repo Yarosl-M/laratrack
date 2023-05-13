@@ -61,14 +61,10 @@
                         $('input[type="file"]').not(':first').remove();
                         $('input[type="file"]').last().one('change', addFileInput);
 
-                        console.log(data);
                         var html = data.html;
                         $('.ticket-items').append(html);
                     },
                     error: function(xhr, status, exception) {
-                        console.log(xhr);
-                        console.log(status);
-                        console.log(exception);
                     },
                 }).always(function() {
                     $('#submit-btn').prop('disabled', false);
