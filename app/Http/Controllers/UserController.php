@@ -81,12 +81,17 @@ class UserController extends Controller
 
     public function authenticate(AuthenticateRequest $request) {
         $attr = $request->safe()->only('email', 'password');
-        if ($this->userService->authenticate($attr)) {
+        if ($this->userService->authenticate($attr['email'], $attr['password'])) {
+            // dd(!is_null(Auth::user()->deactivated_at));
+            if (!is_null(Auth::user()->deactivated_at)) {
+                Auth::logout(); $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->withErrors(['auth' => 'Учётная запись отключена.']);
+            }
             $request->session()->regenerate();
-
             return redirect()->intended('/');
         }
-        else return back()->withErrors(['auth' => 'Неправильные учётные данные']);
+        return back()->withErrors(['auth' => 'Неправильные учётные данные']);
     }
     public function logout(Request $request) {
         Auth::logout();

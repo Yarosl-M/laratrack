@@ -29,7 +29,9 @@ class UserService {
         return $u;
     }
 
-    public function authenticate(array $credentials): bool { return auth()->attempt($credentials); }
+    public function authenticate(string $email, string $password): bool { return Auth::attempt([
+        'email' => $email, 'password' => $password
+    ]); }
 
     public function changePassword(User $user, string $new): bool {
         $oldHash = $user->password;
