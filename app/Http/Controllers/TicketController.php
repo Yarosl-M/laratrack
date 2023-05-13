@@ -18,12 +18,12 @@ class TicketController extends Controller
 
     public function index(Request $request) {
         return view('tickets.index',
-    ['tickets' => Ticket::latest()->active()->filter(['search' => $request->query('search')])->paginate(10)]);
+    ['tickets' => Ticket::latest()->active()->filter(['search' => $request->query('search')])->paginate(8)]);
     }
 
     public function archive(Request $request) {
         return view('tickets.index-archive',
-    ['tickets' => Ticket::latest()->archived()->filter(['search' => $request->query('search')])->paginate(10)]);
+    ['tickets' => Ticket::latest()->archived()->filter(['search' => $request->query('search')])->paginate(8)]);
     }
 
     public function create() {
@@ -32,7 +32,7 @@ class TicketController extends Controller
         return view('tickets.create', ['sheets' => ['style_form', 'test'], 'title' => 'Создать тикет']);
     }
 
-    public function settings(Ticket $ticket) {
+    public function settings(Request $request, Ticket $ticket) {
         $titleSubject = (strlen($ticket->subject) < 25) ? $ticket->subject :
         (substr($ticket->subject, 0, 20) . '…');
         return view('tickets.settings', ['ticket' => $ticket, 'sheets' => ['style_ticket_settings'],
