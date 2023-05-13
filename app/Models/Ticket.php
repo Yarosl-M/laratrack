@@ -14,6 +14,9 @@ class Ticket extends Model
 {
     protected $fillable = ['client_id', 'assigned_to', 'subject', 'priority_id', 'is_open', 'client_rating', 'archived_at'];
     public $incrementing = false;
+    protected $casts = [
+        'archived_at' => 'datetime'
+    ];
     use HasUlids;
     use HasFactory;
 
