@@ -8,7 +8,6 @@
 @props(['ticket', 'entries'])
 <x-layout :stylesheets="$sheets" :title="$title">
     <section class="main" style="margin:0;">
-        <script src="https://unpkg.com/javascript-time-ago@2.5.9/bundle/javascript-time-ago.js"></script>
         <h1>
             {{$ticket->subject}}
         </h1>
