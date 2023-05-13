@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::middleware('auth:sanctum')
 ->post('/tickets/{ticket}/comment', [TicketApiController::class, 'comment']);
-
+// Route::post('/tickets/{ticket}/comment', function(Request $request) {return dd($request);});
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

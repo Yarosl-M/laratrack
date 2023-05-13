@@ -68,7 +68,6 @@
                 @break
             @default
         @endswitch
-        {{-- make a # link and add to css --}}
         <a class="time-link no-underline hover-underline" href="#{{$action->id}}">({{$action->created_at->diffForHumans()}})</a>
     </p>
 </div>

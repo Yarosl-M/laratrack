@@ -1,13 +1,14 @@
 @props(['ticket'])
+{{-- {{dd($errors)}} --}}
 <template id="filetemplate">
-    <input type="file" name="attachments[]" accept="image/*,text/plain">
+    <input type="file" name="files[]" accept="image/*,text/plain">
 </template>
-<form method="POST" action="/api/tickets/{{$ticket->id}}/comment" id="msg-form" class="msg-form">
+<form method="POST" enctype="multipart/form-data" action="/tickets/{{$ticket->id}}/comment" id="msg-form" class="msg-form">
     @csrf
-    <label for="message-text">Ответить</label>
-    <textarea name="message-text" required>{{old('message-text')}}</textarea>
+    <label for="content">Ответить</label>
+    <textarea name="content" required>{{old('content')}}</textarea>
     <label for="files">Прикрепить файлы</label>
-    <input type="file" name="attachments[]" accept="image/*,text/plain">
+    <input type="file" name="files[]" accept="image/*,text/plain">
     <button id="submit-btn">Отправить</button>
     <script>
         const fileLimit = 5;
@@ -25,22 +26,22 @@
         }
         $(document).ready(function() {
             var csrf = $('meta[name="csrf-token"]').attr('content');
-            $('input[name="attachments[]"]').last().one("change", addFileInput);
+            $('input[name="files[]"]').last().one("change", addFileInput);
+            return; // !!!!!!!!!!!!!!!
             $('#msg-form').on('submit', function(event) {
-                console.log('hi');
 
                 $('#submit-btn').prop('disabled', true);
 
                 var formData = new FormData();
-                var message = $('[name="message-text"]').val();
+                var message = $('[name="content"]').val();
                 formData.append('content', message);
                 var attachments = [];
-                var fileInputs = $('[name="attachments[]"]');
+                var fileInputs = $('[name="files[]"]');
                 // also if we have 5 files then we will need to iterate over the last one too
                 // thi is the best line of code in this entire repository btw
                 for (var i = 0; i < fileInputs.length - (fileInputs.length < fileLimit); i++) {
                     var file = fileInputs[i].files[0];
-                    f.append('attachments', file);
+                    f.append('files', file);
                 }
 
                 // 
@@ -48,13 +49,13 @@
                     url: '{{url("/api/tickets/".$ticket->id."/comment")}}',
                     contentType: false,
                     data: formData,
-                    headers: { 'X-CSRF-TOKEN': csrf },
+                    headers: { 'X-CSRF-TOKEN': csrf, 'Referer': 'localhost' },
                     xhrFields: { withCredentials: true },
                     dataType: 'json',
                     processData: false,
                     method: 'POST',
                     success: function(data) {
-                        $('textarea[name="message-text"]').val('');
+                        $('textarea[name="content"]').val('');
                         console.log(data);
                         var html = data.html;
                         $('.ticket-items').append(html);

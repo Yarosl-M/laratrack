@@ -14,7 +14,9 @@
                 @else
                     {{$message->user->username}}
                 @endif
-                <i> комментирует ({{$message->created_at->diffForHumans()}})</i></p>
+                <i> комментирует</i><a class="time-link no-underline hover-underline" href="#{{$message->id}}">
+                ({{$message->created_at->diffForHumans()}})</a>
+            </p>
     </div>
     <p>
         {{$message->content}}

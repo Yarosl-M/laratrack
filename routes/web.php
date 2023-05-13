@@ -39,12 +39,9 @@ Route::get('/tickets/{ticket}/settings', [TicketController::class, 'settings']);
 // сохранить параметры тикета
 Route::post('/tickets/{ticket}/settings', [TicketController::class, 'update']);
 
+Route::post('/tickets/{ticket}/comment', [TicketController::class, 'comment']);
+
 Route::post('/tickets', [TicketController::class, 'store']);
-
-// прикреплённые к сообщениям файлы
-Route::get('/files/tickets/{ticket_id}/{message_id}/{file}', [FileController::class, 'getTicketAttachment']);
-
-Route::get('/files/users/{user_id}/{file}', [FileController::class, 'getProfilePicture']);
 
 // получить форму входа
 Route::get('/login', [UserController::class, 'login']);
