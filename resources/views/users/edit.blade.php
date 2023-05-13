@@ -7,18 +7,29 @@ $title = $user->displayName();
     <div class="main">
         <div id="account-tab">
             <h1>Настройки учётной записи</h1>
-            <div class="bordered section">
-                <h3>Учётные данные</h3>
-                <form class="account-settings">
-                    <label class="username-label">Имя пользователя (Вы не можете его изменить)</label>
-                    <input class="username" type="text" disabled readonly value="{{$user->username}}">
-                    <label for="name" class="name-label">Ваше имя (необязательно)</label>
-                    <input type="text" class="name" name="name" value="{{$user->name}}">
-                    <label for="email" class="email-label">Адрес эл. почты</label>
-                    <input type="email" class="email" name="email" value="{{$user->email}}">
-                    <button class="save-user-settings-btn">Сохранить изменения</button>
-                    <button class="reset-user-settings-btn">Отмена</button>
-                    <a class="no-underline" style="justify-self: start;" href="/account/change-password" class="change-pwd">Сменить пароль…</a>
+            <div style="display:flex;flex-direction:row;">
+                <div class="bordered section">
+                    <h3>Учётные данные</h3>
+                    <form method="POST" class="account-settings">
+                        @csrf
+                        <label class="username-label">Имя пользователя (Вы не можете его изменить)</label>
+                        <input class="username" type="text" disabled readonly value="{{$user->username}}">
+                        <label for="name" class="name-label">Ваше имя (необязательно)</label>
+                        <input type="text" class="name" name="name" value="{{$user->name}}">
+                        <label for="email" class="email-label">Адрес эл. почты</label>
+                        <input type="email" class="email" name="email" value="{{$user->email}}">
+                        <button class="save-user-settings-btn">Сохранить изменения</button>
+                        <button class="reset-user-settings-btn">Сброс</button>
+                        <a class="no-underline" style="justify-self: start;" href="/account/change-password" class="change-pwd">Сменить пароль…</a>
+                    </form>
+                </div>
+                <form method="POST" enctype="multipart/form-data" action="/account/update-profile-picture" class="bordered section user-pfp-settings">
+                    <h3>Изображение учётной записи</h3>
+                    @csrf
+                    <x-user-pfp :user="$user" :size="8"/>
+                    <label style="font-size:0.8rem">Максимальный размер изображения: 3 МБ.<br>Поддерживаемые форматы: PNG, JPEG, JPG.<br></label>
+                    <input type="file" name="pfp" accept=".png,.jpg,.jpeg">
+                    <button type="submit">Загрузить</button>
                 </form>
             </div>
         </div>
@@ -58,14 +69,21 @@ $title = $user->displayName();
     </div>
     <script>
         $(document).ready(function(e) {
+            const initialName = '{{$user->name}}';
+            const initialEmail = '{{$user->email}}';
             $('#account-tab-link').on('click', function(e) {
                 $('#tickets-tab').css('display', 'none');
                 $('#account-tab').css('display', 'block');
                 e.preventDefault();
-            })
+            });
             $('#tickets-tab-link').on('click', function(e) {
                 $('#account-tab').css('display', 'none');
                 $('#tickets-tab').css('display', 'block');
+                e.preventDefault();
+            });
+            $('.reset-user-settings-btn').on('click', function(e) {
+                $('input[name="name"]').val(initialName);
+                $('input[name="email"]').val(initialEmail);
                 e.preventDefault();
             })
         })

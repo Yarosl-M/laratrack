@@ -37,6 +37,7 @@
                 var attachments = [];
                 var fileInputs = $('[name="attachments[]"]');
                 // also if we have 5 files then we will need to iterate over the last one too
+                // thi is the best line of code in this entire repository btw
                 for (var i = 0; i < fileInputs.length - (fileInputs.length < fileLimit); i++) {
                     var file = fileInputs[i].files[0];
                     f.append('attachments', file);

@@ -58,3 +58,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
 Route::get('/account', [UserController::class, 'edit']);
+Route::get('/account/change-password', [UserController::class, 'change_password']);
+
+Route::post('/account/update-profile-picture', [UserController::class, 'update_pfp']);
+Route::post('/users/change-password', [UserController::class, 'update_password']);

@@ -29,7 +29,15 @@ class UserService {
         return $u;
     }
 
-    public function authenticate(array $credentials): bool {
-        return auth()->attempt($credentials);
+    public function authenticate(array $credentials): bool { return auth()->attempt($credentials); }
+
+    public function changePassword(User $user, string $new): bool {
+        $oldHash = $user->password;
+        // old and new are the same
+        if (Hash::check($new, $oldHash)) return false;
+        $hash = Hash::make($new);
+        $user->password = $hash;
+        $user->save();
+        return true;
     }
 }

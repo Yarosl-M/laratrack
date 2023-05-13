@@ -59,3 +59,9 @@ h1 {
 .save-user-settings-btn { grid-area: 4 / 1 / 5 / 2; width: fit-content; }
 .reset-user-settings-btn { grid-area: 4 / 2 / 5 / 3; width: fit-content; }
 .change-pwd { grid-area: 5 / 1 / 6 / 3; }
+
+.user-pfp-settings {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
