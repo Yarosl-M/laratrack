@@ -16,8 +16,8 @@ class TicketApiController extends Controller {
     public function comment(AddMessageRequest $request, Ticket $ticket) {
         $filenames = [];
 
-        if ($request->hasFile('attachments')) {
-            $files = $request->file('attachments');
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
             $attachments = [];
             foreach ($files as $file) {
                 $filenames[] = $file->getClientOriginalName();
@@ -31,14 +31,14 @@ class TicketApiController extends Controller {
                 'content' => ($request->safe()->only('content'))['content'],
                 'files' => $filenames,
             ]);
-        if ($request->hasFile('attachments')) {
+        if ($request->hasFile('files')) {
             foreach ($files as $file) {
                 $path = $file->storeAs('/public/tickets/' . $ticket->id . '/' . $m->id,
                 $file->getClientOriginalName());    
             }
         }
         $component = view('components.ticket-message', [
-            'ticket' => $m->ticket()->get(),
+            'ticket' => $m->ticket()->first(),
             'message' => $m,
         ]);
         $html = $component->render();

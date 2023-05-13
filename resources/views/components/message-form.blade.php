@@ -27,8 +27,9 @@
         $(document).ready(function() {
             var csrf = $('meta[name="csrf-token"]').attr('content');
             $('input[name="files[]"]').last().one("change", addFileInput);
-            return; // !!!!!!!!!!!!!!!
+            // return; // !!!!!!!!!!!!!!!
             $('#msg-form').on('submit', function(event) {
+                event.preventDefault();
 
                 $('#submit-btn').prop('disabled', true);
 
@@ -41,21 +42,25 @@
                 // thi is the best line of code in this entire repository btw
                 for (var i = 0; i < fileInputs.length - (fileInputs.length < fileLimit); i++) {
                     var file = fileInputs[i].files[0];
-                    f.append('files', file);
+                    formData.append('files[]', file);
                 }
 
                 // 
                 $.ajax({
                     url: '{{url("/api/tickets/".$ticket->id."/comment")}}',
-                    contentType: false,
                     data: formData,
-                    headers: { 'X-CSRF-TOKEN': csrf, 'Referer': 'localhost' },
-                    xhrFields: { withCredentials: true },
+                    contentType: false,
                     dataType: 'json',
                     processData: false,
                     method: 'POST',
                     success: function(data) {
-                        $('textarea[name="content"]').val('');
+                        $('#msg-form')[0].reset();
+                        // $('textarea[name="content"]').val('');
+                        // // also clear the files too
+                        // $('input[type="file"]').val(null);
+                        $('input[type="file"]').not(':first').remove();
+                        $('input[type="file"]').last().one('change', addFileInput);
+
                         console.log(data);
                         var html = data.html;
                         $('.ticket-items').append(html);
@@ -64,11 +69,13 @@
                         console.log(xhr);
                         console.log(status);
                         console.log(exception);
-                    }
+                    },
+                }).always(function() {
+                    $('#submit-btn').prop('disabled', false);
                 });
 
-                $('#submit-btn').prop('disabled', false);
-                event.preventDefault();
+                
+                // event.preventDefault();
             });
         });
     </script>
