@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Services\TicketService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -47,6 +48,17 @@ class TicketController extends Controller
         (substr($ticket->subject, 0, 20) . '…');
         return view('tickets.settings', ['ticket' => $ticket, 'sheets' => ['style_ticket_settings'],
         'title' => $titleSubject]);
+    }
+
+    public function destroy(Request $request, Ticket $ticket) {
+        $archive = $ticket->archived_at != null;
+        $ticket->delete();
+        return redirect($archive ? '/tickets/archive' : 'tickets');
+    }
+
+    public function move_to_archive(Request $request, Ticket $ticket) {
+        $this->ticketService->archiveTicket($ticket->id);
+        return back();
     }
 
     public function store(CreateTicketRequest $request) {

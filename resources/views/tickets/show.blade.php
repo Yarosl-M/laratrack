@@ -64,8 +64,51 @@
         @endif
         @unless ($ticket->archived_to != null)
             <a class="sidebar-link" href="/tickets/{{$ticket->id}}/settings">Параметры тикета…</a>
-            <a href="#" class="sidebar-link">В архив</a>
-            <a href="#" class="sidebar-link link-delete">Удалить тикет</a>
+            <a href="#" class="sidebar-link" id="link-archive">В архив</a>
+            <a href="#" class="sidebar-link link-delete" id="link-delete">Удалить тикет</a>
         @endunless
     </section>
 </x-layout>
+<dialog id="archive-dialog">
+    <form method="POST" action="{{url()->current()}}/archive" class="dialog-wrapper">
+        @csrf
+        <h2>Архивирование тикета</h2>
+        <p>Вы уверены, что хотите переместить тикет в архив?<br>Тикеты в архиве редактировать невозможно.<br>Это действие нельзя отменить.</p>
+        <div class="button-list">
+            <button id="archive-btn" type="submit">В архив</button>
+            <button id="archive-cancel-btn" type="reset">Отмена</button>
+        </div>
+    </form>
+</dialog>
+<dialog id="delete-dialog">
+    <form method="POST" action="{{url()->current()}}" class="dialog-wrapper">
+        @csrf
+        @method('DELETE')
+        <h2>Удалить тикет</h2>
+        <p>Вы уверены, что хотите удалить данный тикет?<br>Это действие нельзя отменить.<br>Рекомендуется вместо этого перемещать закрытые тикеты в архив.</p>
+        <div class="button-list">
+            <button id="delete-btn" type="submit">Удалить</button>
+            <button id="delete-cancel-btn" type="reset">Отмена</button>
+        </div>
+    </form>
+</dialog>
+<script>
+    $(document).ready(function() {
+        $('#link-archive').on('click', function(e) {
+            e.preventDefault();
+            $('#archive-dialog')[0].showModal();
+        });
+        $('#link-delete').on('click', function(e) {
+            e.preventDefault();
+            $('#delete-dialog')[0].showModal();
+        });
+        $('#archive-cancel-btn').on('click', function(e) {
+            e.preventDefault();
+            $('#archive-dialog')[0].close();
+        });
+        $('#delete-cancel-btn').on('click', function(e) {
+            e.preventDefault();
+            $('#delete-dialog')[0].close();
+        });
+    });
+</script>

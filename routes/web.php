@@ -4,6 +4,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use App\Http\Requests\CreateTicketRequest;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,9 @@ Route::middleware('auth')->group(function() {
 
     Route::post('/tickets/{ticket}/comment', [TicketController::class, 'comment']);
 
+    Route::post('/tickets/{ticket}/archive', [TicketController::class, 'move_to_archive']);
+    Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy']);
+
     Route::post('/tickets', [TicketController::class, 'store']);
 
     Route::post('/logout', [UserController::class, 'logout']);
@@ -63,4 +67,20 @@ Route::middleware('auth')->group(function() {
     Route::post('/account/update', [UserController::class, 'update']);
     Route::post('/account/update-profile-picture', [UserController::class, 'update_pfp']);
     Route::post('/users/change-password', [UserController::class, 'update_password']);
+
+    Route::get('/dashboard', [UserController::class, 'dashboard']);
+
+    // email verification
+    // Route::get('/verify-email', [UserController::class, 'verification_notice'])
+    // ->name('verification-notice');
+    // // send verification link
+    // Route::get('email/verify/{id}/{hash}', function(EmailVerificationRequest $request) {
+    //     $request->fulfill();
+    //     return redirect('/');
+    // })->middleware('signed')->name('verification.verify');
+    // resend link
+    // Route::post('/email/verification-notification', function(Request $request) {
+    //     $request->user()->sendEmailVerificationNotification();
+    //     return back()->with('message', 'Ссылка для подтверждения отправлена');
+    // });
 });
