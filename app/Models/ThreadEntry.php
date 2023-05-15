@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\ModelsPruned;
 
 /* Base table for thread actions and messages */
-class ThreadEntry extends ModelsPruned
+class ThreadEntry extends Model
 {
     protected $fillable = ['ticket_id', 'user_id'];
     public $incrementing = false;

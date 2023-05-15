@@ -8,6 +8,8 @@ use App\Models\Tag;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +17,33 @@ use RangeException;
 
 class TicketService {
     public function __construct(private TicketActionService $actionService) {}
+
+    public function getAll(bool $active = true, string|null $sortBy = 'latest',
+    string|null $search = null, string|null $status = 'all', array|null $tags) {
+        $query = ($active) ? (Ticket::active()) : (Ticket::archived());
+        $query = match ($sortBy) {
+            'latest' => $query->latest(),
+            'oldest' => $query->oldest(),
+            'oldest_activity' => $query->oldestActivity(),
+            'latest_activity' => $query->latestActivity(),
+            default => $query->latest()
+        };
+        if (isset($search)) {
+            $query = $query->search($search);
+        }
+        if ($status == 'open') $query = $query->open();
+        if ($status == 'closed') $query = $query->closed();
+
+        if (isset($tags)) {
+            foreach ($tags as $tag) {
+                $query = $query->whereHas('tags', function(Builder $query) use ($tag) {
+                    $query->where('id', $tag);
+                });
+            }
+        }
+
+        return $query->paginate(10);
+    }
     
     // createTicket also contains the text of the first message and other info but only the user-supplied
     // info, not things like created_at and so on (basically just a makeshift dto)

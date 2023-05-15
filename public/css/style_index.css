@@ -31,9 +31,23 @@ form.search>div {
     border-width: 2px;
     border-color: #bbb;
     border-radius: 3px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem; 
+}
+.pagination-wrapper {
+    float: right;
 }
 
+.sort-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.tag-list {
+    overflow-y: auto;
+    max-height: 15rem;
+    border-style: solid;
+    border-width: 1px;
+}
 
 .ticket-card a {
     text-decoration: none;

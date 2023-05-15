@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\UserType;
 use App\Models\Permission;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -26,6 +27,7 @@ class UserService {
         $u->type = UserType::Client->value;
 
         $u->save();
+
         return $u;
     }
 

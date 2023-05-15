@@ -1,0 +1,24 @@
+.pagination {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+}
+.pagination li {
+    list-style-type: none;
+    width: 2rem;
+    height: 2rem;
+    border-style: solid;
+    border-radius: 8px;
+    border-color: #888;
+}
+.pagination li>* {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: larger;
+    line-height: 2rem;
+}
+.pagination li.active, .pagination li.disabled {
+    color: #999;
+}

@@ -16,19 +16,29 @@ class TicketController extends Controller
 {
     public function __construct(private TicketService $ticketService) {}
 
-    public function index(Request $request) {
-        return view('tickets.index',
-    ['tickets' => Ticket::latest()->active()->filter(['search' => $request->query('search')])->paginate(8)]);
+    private function prepareIndexView(Request $request, bool $active) {
+        $sortBy = $request->query('sort_by', 'latest');
+        $search = $request->query('search', null);
+        $isOpen = $request->query('status', 'all');
+        $tagIds = $request->query('tags', null);
+        $tickets = $this->ticketService->getAll($active, $sortBy, $search, $isOpen, $tagIds);
+        return view('tickets.index', [
+            'tickets' => $tickets, 'title' => 'Просмотр тикетов', 'tags' => Tag::get(),
+            'queryData' => [
+                'search' => $search,
+                'sort_by' => $sortBy,
+                'status' => $isOpen,
+                'tags' => $tagIds
+            ]
+        ]);
+
     }
 
-    public function archive(Request $request) {
-        return view('tickets.index-archive',
-    ['tickets' => Ticket::latest()->archived()->filter(['search' => $request->query('search')])->paginate(8)]);
-    }
+    public function index(Request $request) { return $this->prepareIndexView($request, true); }
+
+    public function archive(Request $request) { return $this->prepareIndexView($request, false); }
 
     public function create() {
-    //     return gettype(view('components.user-pfp', ['user' => User::first()])
-    // ->render());
         return view('tickets.create', ['sheets' => ['style_form', 'test'], 'title' => 'Создать тикет']);
     }
 

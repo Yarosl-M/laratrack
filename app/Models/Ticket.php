@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,7 +43,24 @@ class Ticket extends Model
         }
     }
 
-    public function assignedTo($query, User $user) {
+    public function scopeSearch($query, string $search) {
+        return $query->where('subject', 'ilike', '%' . $search . '%');
+    }
+    
+    // тикеты с самой старой активностью (самое раннее последнее действие)
+    // regular order => from earliest to newest (oldest activity)
+    // desc order => from newest to earliest (latest activity)
+    public function scopeOldestActivity($query) {
+        return $query->orderBy(ThreadEntry::select('created_at')
+        ->whereColumn('ticket_id', 'tickets.id')->orderByDesc('created_at')->limit(1));
+    }
+
+    public function scopeLatestActivity($query) {
+        return $query->orderByDesc(ThreadEntry::select('created_at')
+        ->whereColumn('ticket_id', 'tickets.id')->orderByDesc('created_at')->limit(1));
+    }
+
+    public function scopeAssignedTo($query, User $user) {
         return $query->where('assigned_to', $user->id);
     }
 
