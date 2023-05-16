@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Enums\UserType;
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,12 +18,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /* A user of the system (including clients and operators and admins all together) */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
     protected $fillable = ['username', 'email', 'profile_picture', 'phone', 'name'];
     public $incrementing = false;
     use HasUlids;
     use HasApiTokens, HasFactory, Notifiable;
+    use MustVerifyEmail;
 
     /**
      * The attributes that should be cast.

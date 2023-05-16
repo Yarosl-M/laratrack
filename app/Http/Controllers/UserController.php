@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AuthenticateRequest;
-use App\Http\Requests\ChangeAccountSettingsRequest;
-use App\Http\Requests\ChangePasswordRequest;
-use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use App\Services\UserService;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\UserService;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\AuthenticateRequest;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ChangeAccountSettingsRequest;
+use App\Models\Permission;
+use App\Models\Tag;
 
 class UserController extends Controller
 {
@@ -31,7 +34,9 @@ class UserController extends Controller
             $attr = $request->safe()->only('email', 'username', 'password', 'name');
             $attr['username'] = Str::lower($attr['username']);
             $u = $this->userService->create($attr);
-            return redirect('/');
+            Auth::login($u);
+            // event(new Registered($u));
+            return redirect('/login');
         }
 
     public function edit(Request $request) {
@@ -98,5 +103,17 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function verification_notice(Request $request) {
+        return view('auth.verify-email', ['user' => $request->user()]);
+    }
+
+    public function dashboard(Request $request) {
+        $user = $request->user();
+        $tags = Tag::get();
+        $users = User::get();
+        $permissions = Permission::get();
+        return view('users.dashboard', compact('user', 'tags', 'users', 'permissions'));
     }
 }
