@@ -13,6 +13,37 @@ h1 {
     gap: 1rem;
     align-items: flex-start;
 }
+.tag-list {
+    width: fit-content;
+    margin: 1rem;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.tag-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    padding: 0.4rem;
+    flex: 1 1 0px;
+    gap: 1rem;
+}
+.tag-name {
+    background-color: var(--primary-color);
+    font-weight: bold;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    white-space: nowrap;
+    margin-right: auto;
+}
+.tag-wrapper input {
+    margin-right: auto;
+}
+.tag-wrapper .tag-name + span {
+    margin-left: 5rem;
+}
 .user-tab-item {
     margin:1rem;
     padding: 0.5rem;
@@ -102,4 +133,20 @@ dialog .dialog-buttons {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+}
+#add-tag-link {
+    align-self: flex-end;
+}
+.tag-option {
+    color: #333;
+    cursor: pointer;
+}
+.tag-option:hover {
+    color: #888;
+}
+.tag-delete {
+    color: #700;
+}
+.tag-delete:hover {
+    color: #a00;
 }

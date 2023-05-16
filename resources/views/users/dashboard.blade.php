@@ -7,7 +7,7 @@
     <div class="main">
         <div id="users-tab">
             {{-- manage users' permissions, deactivate accounts and so on --}}
-            <h1>Настройки учётных записей</h1>
+            <h1>Управление учётными записями</h1>
             <section class="users-tab-main">
                 <div class="bordered user-list-wrapper user-tab-item">
                     <h3>Пользователи системы</h3>
@@ -26,13 +26,25 @@
             </section>
         </div>
         <div id="tags-tab" style="display:none">
-            {{-- just edit tags  --}}
+            <h1>Управление тегами</h1>
+            <section class="tags-tab-main">
+                <div class="tag-list bordered">
+                    @foreach ($tags as $tag)
+                        @php        
+                            $usages = $tag->tickets->count();
+                        @endphp
+                        <x-tag-dashboard-card :tag="$tag" :usages="$usages"/>
+                    @endforeach
+                    <a href="#" class="no-underline hover-underline" id="add-tag-link">Добавить тег…</a>
+                </div>
+            </section>
         </div>
     </div>
     <div class="sidebar">
         <a href="" class="sidebar-link" id="users-tab-link">Управление пользователями</a>
         <a href="" class="sidebar-link" id="tags-tab-link">Управление тегами</a>
     </div>
+    {{-- scripts for users tab --}}
     <script>
         var selectedId = '';
         function lockCard(id) {
@@ -240,6 +252,67 @@
                 e.preventDefault();
                 $('#delete-dialog')[0].close();
             });
+    </script>
+    {{-- scripts for tags tab --}}
+    <script>
+        let textField = (id) => $('input[name="' + id + '"]');
+        let tagName = (id) => $('#' + id + ' .tag-name');
+        let editTagBtn = (id) => $('#' + id + ' .tag-edit');
+        let saveTagBtn = (id) => $('#' + id + ' .tag-edit-save');
+        let cancelEditBtn = (id) => $('#' + id + ' .tag-edit-cancel');
+        function bindTagEvents(id) {
+            $('.tag-wrapper#' + id + ' .tag-edit').on('click', openEditForm.bind(null, id));
+            $('.tag-wrapper#' + id + ' .tag-edit-cancel').on('click', cancelTagEdit.bind(null, id));
+            $('.tag-wrapper#' + id + ' .tag-edit-save').on('click', saveTagEdit.bind(null, id));
+            $('.tag-wrapper#' + id + ' .tag-delete').on('click', deleteTag.bind(null, id));
+        }
+        function openEditForm(id) {
+            tagName(id).css('display', 'none');
+            textField(id).val(tagName(id).text()); textField(id).css('display', '');
+            editTagBtn(id).css('display', 'none');
+            saveTagBtn(id).css('visibility', '');
+            cancelEditBtn(id).css('visibility', '');
+        }
+        function cancelTagEdit(id) {
+            textField(id).css('display', 'none'); textField(id).val(tagName(id).text());
+            tagName(id).css('display', ''); 
+            saveTagBtn(id).css('visibility', 'hidden');
+            cancelEditBtn(id).css('visibility', 'hidden');
+            editTagBtn(id).css('display', '');
+        }
+        function saveTagEdit(id) {
+            var data = {
+                name: textField(id).val()
+            }   
+            console.log(data.name);
+        }
+        function deleteTag(id) {
+        }
+        function createTag(id) {
+        }
+        $(document).ready(function() {
+            $('.tag-wrapper').each(function() {
+                var id = $(this).attr('id');
+                bindTagEvents(id);
+            });
+        });
+    </script>
+    {{-- global (e. g. changing tabs) --}}
+    <script>
+        function showTab(tabId) {
+            $('[id$="-tab"]').css('display', 'none');
+            $('#' + tabId).css('display', '');
+        }
+        $(document).ready(function() {
+            $('#users-tab-link').on('click', function(e) {
+                e.preventDefault();
+                showTab('users-tab');
+            });
+            $('#tags-tab-link').on('click', function(e) {
+                e.preventDefault();
+                showTab('tags-tab');
+            });
+        }); 
     </script>
 </x-layout>
 <dialog id="deactivate-dialog">
