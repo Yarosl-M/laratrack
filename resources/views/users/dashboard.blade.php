@@ -43,13 +43,12 @@
             $('#' + id + ' *').css('font-weight', '');
             $('#' + id).css('background-color', ''); 
         }
-            // mode is either append or replace
-            // bloody hell
-            // we already have the ids and the card html
-            // but we could put the event attaching somewhere else then
-            // would be actually fun to have it at, like, the card itself but whatever
-            // so, with that in mind, besides addCard(), I also present to you...
+        // add all of the necessary event listeners to a card
         function initCard(id) {
+            // there's some black magic happening around which I will need to get to later
+            // basically, for some reason the ids attached to those event listeners below
+            // might unexpectedly change when you're switching between the users
+            // console.log('init card ' + id);
             $('#submit-user-settings').on('click', {
                 id: id
             }, submitUserForm);
@@ -75,13 +74,12 @@
             $('#delete-submit').on('click', {
                 id: id }, deleteUser);
         }
-        function addCard(id, html, mode = 'append') {
-            if (mode == 'append') {
+        // this one will add a card and the init its event listeners
+        function addCard(id, html) {
+            if ($('.user-dashboard-card').length == 0)
                 $('#users-tab .users-tab-main').first().append(html);
-            }
-            else if (mode == 'replace') {
+            else
                 $('.user-dashboard-card').replaceWith(html);
-            }
             initCard(id);
         }
 
@@ -101,42 +99,19 @@
                     if (selectedId != id && selectedId != '')
                         unlockCard(selectedId);
                     lockCard(id);
+                    // console.log(selectedId + ' / ' + id);
                     selectedId = id;
                     $('#users-prompt').css('display', 'none');
                     var html = data.html;
-
-                    $('#users-tab .users-tab-main').first().append(html);
-
-                    $('#submit-user-settings').on('click', {
-                        id: selectedId
-                    }, submitUserForm);
-                    $('#deactivate-link').on('click', {
-                        id: selectedId
-                    }, showDeactivateDialog);
-                    $('#activate-link').on('click', {
-                        id: selectedId
-                    }, showActivateDialog);
-                    $('#delete-user-link').on('click', {
-                        id: selectedId
-                    }, showDeleteDialog);
-
-                    $('#deactivate-form')[0].action = "/api/dashboard/users/" + selectedId + '/deactivate';
-                    $('#activate-form')[0].action = "/api/dashboard/users/" + selectedId + '/activate';
-                    $('#delete-form')[0].action = "/api/dashboard/users/" + selectedId;
-
-                    $('#deactivate-submit').on('click', {
-                        id: selectedId }, deactivateUser);
-                    $('#activate-submit').on('click', {
-                        id: selectedId }, reactivateUser);
-                    $('#delete-submit').on('click', {
-                        id: selectedId }, deleteUser);
+                    addCard(selectedId, html);
                 }
             });
         }
         function submitUserForm(event) {
+            event.stopImmediatePropagation();
             event.preventDefault();
             var id = event.data.id;
-            console.log(id);
+            // console.log(id);
             var form = new FormData();
 
             form.append('type', $('#card-' + id + ' option:selected').val());
@@ -163,8 +138,10 @@
             });
         }
         function deactivateUser(event) {
+            event.stopImmediatePropagation();
             event.preventDefault();
             var id = event.data.id;
+            // console.log('deactivate ' + id);
             $('deactivate-dialog button').prop('disabled', true);
             $.ajax({
                 url: '/api/dashboard/users/' + id + '/deactivate',
@@ -177,7 +154,7 @@
                     // it would just return the updated card in the response
                     var html = data.html;
                     alert(response);
-                    $('.user-dashboard-card').replaceWith(html);
+                    addCard(id, html);
                     $('#deactivate-dialog')[0].close();
                 }
             }).always(function() {
@@ -189,6 +166,7 @@
             event.preventDefault();
             var id = event.data.id;
             $('#activate-dialog button').prop('disabled', true);
+            // console.log('reactivate ' + id);
             $.ajax({
                 url: '/api/dashboard/users/' + id + '/activate',
                 method: 'POST',
@@ -199,7 +177,7 @@
                     var response = data.message;
                     var html = data.html;
                     alert(response);
-                    $('.user-dashboard-card').replaceWith(html);
+                    addCard(id, html);
                     $('#activate-dialog')[0].close();
                 }
             }).always(function() {
@@ -207,6 +185,7 @@
             });
         }
         function deleteUser(event) {
+            event.stopImmediatePropagation();
             event.preventDefault();
             var id = event.data.id;
             $('#delete-dialog button').prop('disabled', true);
