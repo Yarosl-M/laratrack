@@ -1,5 +1,4 @@
 @props(['ticket'])
-{{-- {{dd($errors)}} --}}
 <template id="filetemplate">
     <input type="file" name="files[]" accept="image/*,text/plain">
 </template>
@@ -12,7 +11,6 @@
     <button id="submit-btn">Отправить</button>
     <script>
         const fileLimit = 5;
-        // ain't this about the file input amount rather than actual uploaded files?
         var fileAmount = 1;
         var fileHtml = $('#filetemplate').html().trim();
         var csrf = undefined;
@@ -27,7 +25,6 @@
         $(document).ready(function() {
             var csrf = $('meta[name="csrf-token"]').attr('content');
             $('input[name="files[]"]').last().one("change", addFileInput);
-            // return; // !!!!!!!!!!!!!!!
             $('#msg-form').on('submit', function(event) {
                 event.preventDefault();
 
@@ -45,7 +42,6 @@
                     formData.append('files[]', file);
                 }
 
-                // 
                 $.ajax({
                     url: '{{url("/api/tickets/".$ticket->id."/comment")}}',
                     data: formData,
@@ -55,9 +51,6 @@
                     method: 'POST',
                     success: function(data) {
                         $('#msg-form')[0].reset();
-                        // $('textarea[name="content"]').val('');
-                        // // also clear the files too
-                        // $('input[type="file"]').val(null);
                         $('input[type="file"]').not(':first').remove();
                         $('input[type="file"]').last().one('change', addFileInput);
 
@@ -67,11 +60,8 @@
                     error: function(xhr, status, exception) {
                     },
                 }).always(function() {
-                    $('#submit-btn').prop('disabled', false);
+                    setTimeout(() => { $('#submit-btn').prop('disabled', false); }, 500);                    
                 });
-
-                
-                // event.preventDefault();
             });
         });
     </script>
