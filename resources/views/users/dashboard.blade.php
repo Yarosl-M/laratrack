@@ -43,6 +43,47 @@
             $('#' + id + ' *').css('font-weight', '');
             $('#' + id).css('background-color', ''); 
         }
+            // mode is either append or replace
+            // bloody hell
+            // we already have the ids and the card html
+            // but we could put the event attaching somewhere else then
+            // would be actually fun to have it at, like, the card itself but whatever
+            // so, with that in mind, besides addCard(), I also present to you...
+        function initCard(id) {
+            $('#submit-user-settings').on('click', {
+                id: id
+            }, submitUserForm);
+            $('#deactivate-link').on('click', {
+                id: id
+            }, showDeactivateDialog);
+            $('#activate-link').on('click', {
+                id: id
+            }, showActivateDialog);
+            $('#delete-user-link').on('click', {
+                id: id
+            }, showDeleteDialog);
+
+            // dayum that actually looks neat
+            $('#deactivate-form')[0].action = "/api/dashboard/users/" + id + '/deactivate';
+            $('#activate-form')[0].action = "/api/dashboard/users/" + id + '/activate';
+            $('#delete-form')[0].action = "/api/dashboard/users/" + id;
+
+            $('#deactivate-submit').on('click', {
+                id: id }, deactivateUser);
+            $('#activate-submit').on('click', {
+                id: id }, reactivateUser);
+            $('#delete-submit').on('click', {
+                id: id }, deleteUser);
+        }
+        function addCard(id, html, mode = 'append') {
+            if (mode == 'append') {
+                $('#users-tab .users-tab-main').first().append(html);
+            }
+            else if (mode == 'replace') {
+                $('.user-dashboard-card').replaceWith(html);
+            }
+            initCard(id);
+        }
 
         function openUserCard(id) {
             // hide the previous form if there was any as well
