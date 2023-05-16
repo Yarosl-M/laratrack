@@ -5,9 +5,11 @@ namespace App\Services;
 use App\Enums\UserType;
 use App\Models\Permission;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserService {
     public function __construct(private PermissionService $permissionService) {}
@@ -50,6 +52,39 @@ class UserService {
         $user->email = $email;
         $user->save();
         // ???
+        return $user;
+    }
+
+    public function setType(User $user, UserType $type): User {
+        $user->type = $type->value;
+        $user->save();
+        return $user;
+    }
+
+    public function setPermissions(User $user, array $ids): User {
+        $user->permissions()->sync($ids);
+        $user->save();
+        return $user;
+    }
+
+    public function deactivate(User $user): User {
+        if ($user->deactivated_at) return $user;
+
+        $user->deactivated_at = Carbon::now();
+        $user->permissions()->detach();
+        $filename = $user->profile_picture;
+        if (isset($filename)) {
+            Storage::delete('/public/users/' . $filename);
+        }
+        $user->save();
+        return $user;
+    }
+
+    public function activate(User $user): User {
+        if ($user->deactivated_at == null) return $user;
+
+        $user->deactivated_at = null;
+        $user->save();
         return $user;
     }
 }

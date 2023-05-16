@@ -1,0 +1,105 @@
+h1 {
+    margin-left: 1rem;
+}
+.sidebar {
+    order: -1;
+}
+.sidebar>a {
+    text-align: right;
+}
+.users-tab-main {
+    display:flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+}
+.user-tab-item {
+    margin:1rem;
+    padding: 0.5rem;
+}
+.user-list-wrapper {
+    width: fit-content;
+}
+.user-list {
+    border-style: solid;
+    border-width: 1px;
+    overflow-y: auto;
+    max-height: 25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.2rem;
+}
+.user-card-wrapper {
+    display: block;
+    border-radius: 10px;
+    border-color: black;
+}
+.user-card-wrapper:hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+.user-card {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    min-width: 15rem;
+}
+.user-dashboard-card {
+    padding: 0.5rem;
+    width: auto;
+}
+.user-dashboard-card .bordered {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+.user-type-settings {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.user-type-settings>select {
+    font-size: 1.1rem;
+}
+.user-permissions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.permission-card input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+}
+.permission-card label {
+    font-size: 1.2rem;
+}
+.permission-description {
+    font-size: 0.9rem;
+    margin-top: 0;
+    font-style: italic;
+}
+#submit-user-settings {
+    margin: 0.7rem;
+    font-size: 1.1rem;
+}
+dialog h2 {
+    margin: auto;
+    text-align: center;
+}
+dialog {
+    max-width: 30%;
+}
+dialog .dialog-confirmation {
+    margin-bottom: 0;
+}
+dialog .dialog-note {
+    margin-top: 0;
+    font-size: 0.9rem;
+}
+dialog .dialog-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
