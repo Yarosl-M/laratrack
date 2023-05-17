@@ -28,4 +28,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/dashboard/users/{user}/activate', [UserApiController::class, 'activate']);
     // delete user
     Route::delete('/dashboard/users/{user}', [UserApiController::class, 'destroy']);
+    // update tag
+    Route::put('/dashboard/tags/{tag}', [TagApiController::class, 'update']);
 });
