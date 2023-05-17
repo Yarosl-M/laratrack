@@ -2,7 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Enums\UserType;
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,8 +47,27 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
+        // если пользователь не вошёл в систему или не является сотрудником организации,
+        // показываем ошибку 404 вместо 403
+        $this->renderable(function(AuthorizationException $e, Request $request) {
+            if ($request->user() == null)
+                return response()->view('errors.404', [], 404);
+            if ($request->user()->type == UserType::Client->value)
+                return response()->view('errors.404', [], 404);      
+        });
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof AuthorizationException) {
+            if (Auth::user() == null)
+                abort(404);
+            if (Auth::user()->type == UserType::Client->value)
+                abort(404);
+        }
+        return parent::render($request, $e);
     }
 }
