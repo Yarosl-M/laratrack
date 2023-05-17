@@ -35,7 +35,6 @@ class UserController extends Controller
             $attr['username'] = Str::lower($attr['username']);
             $u = $this->userService->create($attr);
             Auth::login($u);
-            // event(new Registered($u));
             return redirect('/login');
         }
 
@@ -87,7 +86,6 @@ class UserController extends Controller
     public function authenticate(AuthenticateRequest $request) {
         $attr = $request->safe()->only('email', 'password');
         if ($this->userService->authenticate($attr['email'], $attr['password'])) {
-            // dd(!is_null(Auth::user()->deactivated_at));
             if (!is_null(Auth::user()->deactivated_at)) {
                 Auth::logout(); $request->session()->invalidate();
                 $request->session()->regenerateToken();
@@ -103,10 +101,6 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
-    }
-
-    public function verification_notice(Request $request) {
-        return view('auth.verify-email', ['user' => $request->user()]);
     }
 
     public function dashboard(Request $request) {

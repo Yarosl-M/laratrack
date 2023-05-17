@@ -41,7 +41,6 @@ class TicketService {
                 });
             }
         }
-
         return $query->paginate(10);
     }
     
