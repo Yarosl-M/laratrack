@@ -41,8 +41,8 @@
         </div>
     </div>
     <div class="sidebar">
-        <a href="" class="sidebar-link" id="users-tab-link">Управление пользователями</a>
-        <a href="" class="sidebar-link" id="tags-tab-link">Управление тегами</a>
+        <a href="#" class="sidebar-link" id="users-tab-link">Управление пользователями</a>
+        {{-- <a href="" class="sidebar-link" id="tags-tab-link">Управление тегами</a> --}}
     </div>
     {{-- scripts for users tab --}}
     <script>
@@ -254,7 +254,7 @@
             });
     </script>
     {{-- scripts for tags tab --}}
-    <script>
+    {{-- <script>
         let textField = (id) => $('input[name="' + id + '"]');
         let tagName = (id) => $('#' + id + ' .tag-name');
         let editTagBtn = (id) => $('#' + id + ' .tag-edit');
@@ -281,12 +281,44 @@
             editTagBtn(id).css('display', '');
         }
         function saveTagEdit(id) {
-            var data = {
+            var tagData = {
                 name: textField(id).val()
-            }   
-            console.log(data.name);
+            }
+            $.ajax({
+                url: '/api/dashboard/tags/' + id,
+                method: 'PUT',
+                data: JSON.stringify(tagData),
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    // do something
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+            }).always(function() {
+                cancelTagEdit(id);
+            });
         }
         function deleteTag(id) {
+            var usageCount = $('#' + id).attr('data-usages');
+            var msg = '';
+            if (usageCount > 0) {
+                msg += 'Этот тег был использован в тикетах ';
+                msg += usageCount;
+                msg += ' раз'
+                if (usageCount > 1 && usageCount < 5) {
+                    msg += 'а';
+                }
+                msg += '. ';
+            }
+            msg += 'Вы уверены, что хотите удалить этот тег?'
+            if (confirm(msg)) {
+                // blah blah delete as usual
+            }
         }
         function createTag(id) {
         }
@@ -296,9 +328,9 @@
                 bindTagEvents(id);
             });
         });
-    </script>
+    </script> --}}
     {{-- global (e. g. changing tabs) --}}
-    <script>
+    {{-- <script>
         function showTab(tabId) {
             $('[id$="-tab"]').css('display', 'none');
             $('#' + tabId).css('display', '');
@@ -313,7 +345,7 @@
                 showTab('tags-tab');
             });
         }); 
-    </script>
+    </script> --}}
 </x-layout>
 <dialog id="deactivate-dialog">
     <form action="/api/dashboard/users" method="dialog" id="deactivate-form">
