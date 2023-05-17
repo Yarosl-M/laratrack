@@ -21,8 +21,7 @@
         <header class="head">
             <div class="logo">
                 <a href="/">
-                    {{-- logo goes here... also don't forget to use stuff like {{asset}} and whatever --}}
-                    <span style="font-size:48px;font-weight:bold;">LOREM
+                    <span style="font-size:48px;font-weight:bold;">LaraTrack
                     </span>
                 </a>
             </div>

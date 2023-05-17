@@ -3,7 +3,7 @@
         <form class="search" action="">
             <div>
                 <input type="text" name="search" size="50" value="{{$queryData['search']}}" placeholder="Введите поисковый запрос…">
-                <button type="submit">Поиск</button>
+                <button id="search-btn" type="submit">Поиск</button>
                 <button type="reset">Очистить</button>
             </div>
         </form>
@@ -62,7 +62,7 @@
     $(document).ready(function() {
         // return;
         // we'll have to combine both elements into one form and then submit it
-        $('button[type="submit"]').on('click', function(e) {
+        $('#search-btn').on('click', function(e) {
             e.preventDefault();
             var form = $('<form>')
                 .attr('method', 'GET')
