@@ -17,6 +17,10 @@ class TicketController extends Controller
 {
     public function __construct(private TicketService $ticketService) {}
 
+    public function main() {
+        return view('main', ['sheets' => ['style_welcome'], 'title' => 'Добро пожаловать']);
+    }
+
     private function prepareIndexView(Request $request, bool $active) {
         $sortBy = $request->query('sort_by', 'latest');
         $search = $request->query('search', null);

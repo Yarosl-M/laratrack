@@ -1,0 +1,48 @@
+.container {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.hero {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    padding: 1rem;
+    padding-bottom: 2rem;
+    margin: 0;
+    margin-bottom: 1rem;
+    background: repeating-linear-gradient(
+        -45deg,
+         var(--primary-color),
+          var(--primary-color) 20px,
+           var(--primary-alt) 20px,
+           var(--primary-alt) 40px);
+}
+.hero h1, .hero h2 {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: white;
+}
+.stuff-wrapper {
+    margin: 2rem auto;
+    width: fit-content;
+    padding: 1rem;
+    display:flex;
+    flex-direction:row;
+    gap: 1rem;
+    justify-content:space-evenly;
+}
+.stuff-element {
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 0.7rem;
+}
+.stuff-element > h3 {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    text-align: center;
+}

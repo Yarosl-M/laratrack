@@ -18,8 +18,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// for now
-Route::get('/', [TicketController::class, 'index']);
+Route::get('/', [TicketController::class, 'main']);
 
 Route::get('/test', function () {
     return view('users.login');
