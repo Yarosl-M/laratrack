@@ -36,18 +36,18 @@ $title = $user->displayName();
         <div id="tickets-tab">
             <h1>Мои тикеты</h1>
             @if ($user->type == 'operator' || $user->type == 'admin')
-            <div class="bordered section assigned-tickets">
-                <h3>Назначенные тикеты</h3>
-                @if ($user->assigned_tickets->isEmpty())
-                    Вам не назначено тикетов.
-                @else
-                <div class="assigned-ticket-list">
-                    @foreach ($user->assigned_tickets as $ticket)
-                        <x-ticket-card :ticket="$ticket"/>
-                    @endforeach
+                <div class="bordered section assigned-tickets">
+                    <h3>Назначенные тикеты</h3>
+                    @if ($user->assigned_tickets->isEmpty())
+                        Вам не назначено тикетов.
+                    @else
+                    <div class="assigned-ticket-list">
+                        @foreach ($user->assigned_tickets as $ticket)
+                            <x-ticket-card :ticket="$ticket"/>
+                        @endforeach
+                    </div>
+                    @endif
                 </div>
-                @endif
-            </div>
             @endif
             <div class="bordered section created-tickets">
                 <h3>Созданные мной тикеты</h3>
@@ -65,7 +65,7 @@ $title = $user->displayName();
     </div>
     <div class="sidebar">
         <a href="" class="sidebar-link" id="account-tab-link">Настройки учётной записи</a>
-        <a href="" class="sidebar-link" id="tickets-tab-link">Мои тикеты</a>
+            <a href="" class="sidebar-link" id="tickets-tab-link">Мои тикеты</a>            
     </div>
     <script>
         $(document).ready(function(e) {

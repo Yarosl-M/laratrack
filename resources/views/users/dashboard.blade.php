@@ -25,20 +25,24 @@
                 <p id="users-prompt">Выберите пользователя из списка слева, чтобы настроить его права доступа…</p>
             </section>
         </div>
-        <div id="tags-tab" style="display:none">
-            <h1>Управление тегами</h1>
-            <section class="tags-tab-main">
-                <div class="tag-list bordered">
-                    @foreach ($tags as $tag)
-                        @php        
-                            $usages = $tag->tickets->count();
-                        @endphp
-                        <x-tag-dashboard-card :tag="$tag" :usages="$usages"/>
-                    @endforeach
-                    <a href="#" class="no-underline hover-underline" id="add-tag-link">Добавить тег…</a>
+        @if (false)
+            @can('update', App\Models\Tag)
+                <div id="tags-tab" style="display:none">
+                    <h1>Управление тегами</h1>
+                    <section class="tags-tab-main">
+                        <div class="tag-list bordered">
+                            @foreach ($tags as $tag)
+                                @php        
+                                    $usages = $tag->tickets->count();
+                                @endphp
+                                <x-tag-dashboard-card :tag="$tag" :usages="$usages"/>
+                            @endfos reach
+                            <a href="#" class="no-underline hover-underline" id="add-tag-link">Добавить тег…</a>
+                        </div>
+                    </section>
                 </div>
-            </section>
-        </div>
+            @endcan
+        @endif
     </div>
     <div class="sidebar">
         <a href="#" class="sidebar-link" id="users-tab-link">Управление пользователями</a>

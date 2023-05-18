@@ -17,7 +17,7 @@ class TagPolicy {
     public function create(User $user): bool {
         return $user->hasPermission('edit_tags');
     }
-    public function update(User $user, Tag $tag): bool {
+    public function update(User $user): bool {
         return $user->hasPermission('edit_tags');
     }
     public function delete(User $user, Tag $tag): bool {

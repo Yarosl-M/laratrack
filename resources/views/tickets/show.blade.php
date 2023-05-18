@@ -25,7 +25,9 @@
         @endforeach
         </section>
         @unless ($ticket->archived_to != null)
-            <x-message-form :ticket="$ticket"/>    
+            @can('send_message', $ticket)
+                <x-message-form :ticket="$ticket"/>    
+            @endcan
         @endunless
     </section>
     <section class="sidebar">
@@ -63,35 +65,45 @@
         </span>
         @endif
         @unless ($ticket->archived_to != null)
-            <a class="sidebar-link" href="/tickets/{{$ticket->id}}/settings">Параметры тикета…</a>
-            <a href="#" class="sidebar-link" id="link-archive">В архив</a>
-            <a href="#" class="sidebar-link link-delete" id="link-delete">Удалить тикет</a>
+            @can('change_params', $ticket)
+                <a class="sidebar-link" href="/tickets/{{$ticket->id}}/settings">Параметры тикета…</a>
+            @endcan
+            @can('archive', $ticket)
+                <a href="#" class="sidebar-link" id="link-archive">В архив</a>                
+            @endcan
+            @can('delete', $ticket)
+                <a href="#" class="sidebar-link link-delete" id="link-delete">Удалить тикет</a>                
+            @endcan
         @endunless
     </section>
 </x-layout>
-<dialog id="archive-dialog">
-    <form method="POST" action="{{url()->current()}}/archive" class="dialog-wrapper">
-        @csrf
-        <h2>Архивирование тикета</h2>
-        <p>Вы уверены, что хотите переместить тикет в архив?<br>Тикеты в архиве редактировать невозможно.<br>Это действие нельзя отменить.</p>
-        <div class="button-list">
-            <button id="archive-btn" type="submit">В архив</button>
-            <button id="archive-cancel-btn" type="reset">Отмена</button>
-        </div>
-    </form>
-</dialog>
-<dialog id="delete-dialog">
-    <form method="POST" action="{{url()->current()}}" class="dialog-wrapper">
-        @csrf
-        @method('DELETE')
-        <h2>Удалить тикет</h2>
-        <p>Вы уверены, что хотите удалить данный тикет?<br>Это действие нельзя отменить.<br>Рекомендуется вместо этого перемещать закрытые тикеты в архив.</p>
-        <div class="button-list">
-            <button id="delete-btn" type="submit">Удалить</button>
-            <button id="delete-cancel-btn" type="reset">Отмена</button>
-        </div>
-    </form>
-</dialog>
+@can('archive', $ticket)
+    <dialog id="archive-dialog">
+        <form method="POST" action="{{url()->current()}}/archive" class="dialog-wrapper">
+            @csrf
+            <h2>Архивирование тикета</h2>
+            <p>Вы уверены, что хотите переместить тикет в архив?<br>Тикеты в архиве редактировать невозможно.<br>Это действие нельзя отменить.</p>
+            <div class="button-list">
+                <button id="archive-btn" type="submit">В архив</button>
+                <button id="archive-cancel-btn" type="reset">Отмена</button>
+            </div>
+        </form>
+    </dialog>    
+@endcan
+@can('delete', $ticket)
+    <dialog id="delete-dialog">
+        <form method="POST" action="{{url()->current()}}" class="dialog-wrapper">
+            @csrf
+            @method('DELETE')
+            <h2>Удалить тикет</h2>
+            <p>Вы уверены, что хотите удалить данный тикет?<br>Это действие нельзя отменить.<br>Рекомендуется вместо этого перемещать закрытые тикеты в архив.</p>
+            <div class="button-list">
+                <button id="delete-btn" type="submit">Удалить</button>
+                <button id="delete-cancel-btn" type="reset">Отмена</button>
+            </div>
+        </form>
+    </dialog>    
+@endcan
 <script>
     $(document).ready(function() {
         $('#link-archive').on('click', function(e) {

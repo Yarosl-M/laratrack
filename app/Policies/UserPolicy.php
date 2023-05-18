@@ -13,12 +13,15 @@ class UserPolicy {
         return $user->hasPermission('view_users');
     }
     public function change_permissions(User $user, User $model): bool {
-        return $user->hasPermission('edit_user_permissions');
+        return $user->hasPermission('edit_user_permissions')
+        && $user->id != $model->id;
     }
     public function deactivate(User $user, User $model): bool {
-        return $user->hasPermission('deactivate_users');
+        return $user->hasPermission('deactivate_users')
+        && $user->id != $model->id;
     }
     public function delete(User $user, User $model): bool {
-        return $user->hasPermission('delete_users');
+        return $user->hasPermission('delete_users')
+        && $user->id != $model->id;
     }
 }
