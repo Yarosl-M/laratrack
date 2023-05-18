@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagApiController;
 use App\Http\Controllers\UserApiController;
 use App\Http\Controllers\TicketApiController;
 
