@@ -11,8 +11,19 @@ class TicketPolicy
     /**
      * Determine whether the user can view any tickets.
      */
-    public function viewAny(User $user): bool {
+    public function view_any(User $user): bool {
         return $user->hasPermission('view_all_tickets') && $user->hasPermission('view_archived_tickets');
+    }
+
+    public function view_open(User $user): bool {
+        return $user->hasPermission('view_assigned_tickets')
+        || $user->hasPermission('view_unassigned_tickets')
+        || $this->view_any($user);
+    }
+    
+    public function view_archive(User $user): bool {
+        return $user->hasPermission('view_archived_tickets')
+        || $this->view_any($user);
     }
 
     /**
@@ -20,7 +31,7 @@ class TicketPolicy
      */
     public function view(User $user, Ticket $ticket): bool {
         if ($ticket->client_id === $user->id) return $user->hasPermission('view_tickets');
-        if ($ticket->archived_at !== null) return $user->hasPermission('view_archived_tickets');
+        if ($ticket->archived_at !== null) return $this->view_archive($user);
         return ($user->hasPermission('view_all_tickets')) ||
         ($user->hasPermission('view_assigned_tickets') && $ticket->assigned_to === $user->id) ||
         ($user->hasPermission('view_unassigned_tickets') && $ticket->assigned_to == null);

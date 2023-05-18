@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class UserPolicy {
-    public function viewAny(User $user): bool {
+    public function view_any(User $user): bool {
         return $user->hasPermission('view_users');
     }
     public function view(User $user, User $model): bool {

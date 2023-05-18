@@ -13,6 +13,7 @@ class UserApiController extends Controller
 {
     public function __construct(private UserService $userService) {}
     public function show(Request $request, User $user) {
+        $this->authorize('view', $user);
         // $userArr = $user->only(['id', 'username', 'profile_picture', 'deactivated_at', 'type', 'name']);
         // $userArr['display_name'] = $user->displayName();
         // $userArr['permissions'] = $user->permissions()->get()->pluck('id')->toArray();
@@ -26,6 +27,7 @@ class UserApiController extends Controller
         ]);
     }
     public function update(Request $request, User $user) {
+        $this->authorize('change_permissions', $user);
         $validated = $request->validate([
             'type' => [new Enum(UserType::class)]
         ]);
@@ -40,6 +42,7 @@ class UserApiController extends Controller
     }
 
     public function deactivate(User $user) {
+        $this->authorize('deactivate', $user);
         $u = $this->userService->deactivate($user);
         $component = view('components.user-dashboard-card', [
             'user' => $u, 'permissions' => Permission::get()
@@ -53,6 +56,7 @@ class UserApiController extends Controller
     }
 
     public function activate(User $user) {
+        $this->authorize('deactivate', $user);
         $u = $this->userService->activate($user);
         $component = view('components.user-dashboard-card', [
             'user' => $u, 'permissions' => Permission::get()
@@ -62,4 +66,5 @@ class UserApiController extends Controller
             'html' => $component->render()
         ]);
     }
+    // where's delete????? 
 }

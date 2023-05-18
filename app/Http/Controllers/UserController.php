@@ -58,6 +58,7 @@ class UserController extends Controller
         else return back()->withErrors(['pwd_change' => 'Неверно указан текущий пароль']);
     }
 
+    // these ones are for updating self, updating other users is in api controller
     public function update(Request $request) {
         $u = $request->user();
         $validator = Validator::make($request->all(), [
@@ -103,8 +104,10 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    
     public function dashboard(Request $request) {
         $user = $request->user();
+        $this->authorize('change_permissions', $user);
         $tags = Tag::get();
         $users = User::get();
         $permissions = Permission::get();

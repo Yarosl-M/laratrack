@@ -14,6 +14,7 @@ class TicketApiController extends Controller {
     public function __construct(private TicketService $ticketService) { }
     // добавить сообщение в тикет
     public function comment(AddMessageRequest $request, Ticket $ticket) {
+        $this->authorize('send_message', $ticket);
         $filenames = [];
 
         if ($request->hasFile('files')) {

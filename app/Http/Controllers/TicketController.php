@@ -39,15 +39,21 @@ class TicketController extends Controller
 
     }
 
-    public function index(Request $request) { return $this->prepareIndexView($request, true); }
+    public function index(Request $request) {
+        $this->authorize('view_open', Ticket::class);
+        return $this->prepareIndexView($request, true); }
 
-    public function archive(Request $request) { return $this->prepareIndexView($request, false); }
+    public function archive(Request $request) {
+        $this->authorize('view_archive', Ticket::class);
+        return $this->prepareIndexView($request, false); }
 
     public function create() {
+        $this->authorize('create', Ticket::class);
         return view('tickets.create', ['sheets' => ['style_form', 'test'], 'title' => 'Создать тикет']);
     }
 
     public function settings(Request $request, Ticket $ticket) {
+        $this->authorize('change_params', $ticket);
         $titleSubject = (strlen($ticket->subject) < 25) ? $ticket->subject :
         (substr($ticket->subject, 0, 20) . '…');
         return view('tickets.settings', ['ticket' => $ticket, 'sheets' => ['style_ticket_settings'],
@@ -55,17 +61,20 @@ class TicketController extends Controller
     }
 
     public function destroy(Request $request, Ticket $ticket) {
+        $this->authorize('delete', $ticket);
         $archive = $ticket->archived_at != null;
         $ticket->delete();
         return redirect($archive ? '/tickets/archive' : 'tickets');
     }
 
     public function move_to_archive(Request $request, Ticket $ticket) {
+        $this->authorize('archive', $ticket);
         $this->ticketService->archiveTicket($ticket->id);
         return back();
     }
 
     public function store(CreateTicketRequest $request) {
+        $this->authorize('create', Ticket::class);
         /**
          * subject
          * client_id
@@ -106,6 +115,7 @@ class TicketController extends Controller
     }
 
     public function update(Request $request, Ticket $ticket) {
+        $this->authorize('change_params', $ticket);
         $keys = array_keys($request->all());
         $updateTicket = [];
 
@@ -139,6 +149,7 @@ class TicketController extends Controller
     }
 
     public function comment(AddMessageRequest $request, Ticket $ticket) {
+        $this->authorize('send_message', $ticket);
         $filenames = [];
 
         if ($request->hasFile('files')) {
@@ -167,6 +178,7 @@ class TicketController extends Controller
     }
 
     public function show(Ticket $ticket) {
+        $this->authorize('view', $ticket);
         $actions = $ticket->thread_actions;
         $entries = $ticket->messages->concat($actions)->sortBy('created_at');
         $titleSubject = (strlen($ticket->subject) < 25) ? $ticket->subject :

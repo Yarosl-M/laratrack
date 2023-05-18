@@ -1,0 +1,23 @@
+.error-header {
+    margin-top: initial;
+    font-size: 8rem;
+    color: var(--primary-alt);
+    margin-bottom: 1rem;
+}
+.error-caption {
+    margin-top: 0;
+    font-style: italic;
+}
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.center-text {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.go-back-link {
+    font-size: large;
+}
