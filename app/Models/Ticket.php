@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /* A tech support ticket. */
 class Ticket extends Model
@@ -20,6 +22,11 @@ class Ticket extends Model
     ];
     use HasUlids;
     use HasFactory;
+
+    public function isRateable(): bool {
+        return (!$this->is_open)
+        || $this->created_at->floatDiffInDays(Carbon::now()) >= 7.0;
+    }
 
     public function scopeActive($query) {
         return $query->whereNull('archived_at');
@@ -62,6 +69,18 @@ class Ticket extends Model
 
     public function scopeAssignedTo($query, User $user) {
         return $query->where('assigned_to', $user->id);
+    }
+
+    public function latestEntry(): HasOne {
+        return $this->hasOne(ThreadEntry::class)->latestOfMany();
+    }
+
+    public function latestMessage(): HasOne {
+        return $this->hasOne(Message::class)->latestOfMany();
+    }
+
+    public function latestAction(): HasOne {
+        return $this->hasOne(ThreadAction::class)->latestOfMany();
     }
 
     public function thread_entries(): HasMany {
