@@ -67,6 +67,18 @@ class TicketController extends Controller
         return redirect($archive ? '/tickets/archive' : 'tickets');
     }
 
+    public function close(Request $request, Ticket $ticket) {
+        $this->authorize('change_status', $ticket);
+        $this->ticketService->close($ticket, $request->user());
+        return back();
+    }
+
+    public function reopen(Request $request, Ticket $ticket) {
+        $this->authorize('change_status', $ticket);
+        $this->ticketService->open($ticket, $request->user());
+        return back();
+    }
+
     public function move_to_archive(Request $request, Ticket $ticket) {
         $this->authorize('archive', $ticket);
         $this->ticketService->archiveTicket($ticket->id);
@@ -145,7 +157,7 @@ class TicketController extends Controller
 
         $this->ticketService->updateTicket($ticket->id, $updateTicket);
 
-        return redirect('/tickets/' . $ticket->id);
+        return redirect('/tickets/' . $ticket->id); 
     }
 
     public function comment(AddMessageRequest $request, Ticket $ticket) {

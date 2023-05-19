@@ -63,9 +63,8 @@ class TicketService {
     }
     
     // again, the array is just makeshift dtos for now
-    // also add user here as a parameter instead
-    // add method to user model which will check if it has superuser or otherwise a provided role
-    // ok it's apparently instead done with gates
+    // anyway, authorization is actually done in a controller 
+    // but this thing is very stupid anyway
     public function updateTicket(string $id, array $updateTicket): Ticket {
         $ticket = Ticket::find($id);
         $user = Auth::user();
@@ -90,6 +89,7 @@ class TicketService {
             $this->actionService->changePriority($ticket, $user, $old, $new);
             $ticket->priority_id = $new->id;
         }
+        // this is awful and this is the exact opposite of what a service class is intended to do
         if (array_key_exists('is_open', $updateTicket)) {
          // close ticket
             if ($updateTicket['is_open'] == false) {
@@ -124,6 +124,20 @@ class TicketService {
             $ticket->tags()->sync($newIds);
         }
         // archive it and send client rating in a separate method
+        $ticket->save();
+        return $ticket;
+    }
+
+    public function close(Ticket $ticket, User $closedBy) {
+        $this->actionService->closeTicket($ticket, $closedBy);
+        $ticket->is_open = false;
+        $ticket->save();
+        return $ticket;
+    }
+
+    public function open(Ticket $ticket, User $openedBy) {
+        $this->actionService->reopenTicket($ticket, $openedBy);
+        $ticket->is_open = true;
         $ticket->save();
         return $ticket;
     }

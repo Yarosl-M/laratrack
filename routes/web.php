@@ -53,6 +53,9 @@ Route::middleware('auth')->group(function() {
 
     Route::post('/tickets/{ticket}/comment', [TicketController::class, 'comment']);
 
+    Route::post('/tickets/{ticket}/close', [TicketController::class, 'close']);
+    Route::post('/tickets/{ticket}/open', [TicketController::class, 'reopen']);
+
     Route::post('/tickets/{ticket}/archive', [TicketController::class, 'move_to_archive']);
     Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy']);
 

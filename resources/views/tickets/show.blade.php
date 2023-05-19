@@ -71,6 +71,9 @@
             @can('archive', $ticket)
                 <a href="#" class="sidebar-link" id="link-archive">В архив</a>                
             @endcan
+            @can('change_status', $ticket)
+                <a href="#" class="sidebar-link" id="link-clopen">{{$ticket->is_open ? "Закрыть" : "Открыть"}} тикет</a>
+            @endcan
             @can('delete', $ticket)
                 <a href="#" class="sidebar-link link-delete" id="link-delete">Удалить тикет</a>                
             @endcan
@@ -104,6 +107,25 @@
         </form>
     </dialog>    
 @endcan
+@can('change_status', $ticket)
+    <dialog id="clopen-dialog">
+        <form action="{{url()->current() . '/' . ($ticket->is_open ? 'close' : 'open')}}" method="post"
+            class="dialog-wrapper">
+            @csrf
+            @if ($ticket->is_open)
+                <h2>Закрыть тикет</h2>
+                <p>Вы уверены, что хотите пометить тикет как закрытый?<br>Закрывайте только разрешённые тикеты или тикеты, которые не обслуживаются службой поддержки.</p>
+            @else
+                <h2>Открыть тикет</h2>
+                <p>Вы уверены, что хотите снова отметить данный тикет как открытый для разрешения?</p>
+            @endif
+            <div class="button-list">
+                <button id="clopen-btn" type="submit">{{$ticket->is_open ? 'Закрыть' : 'Переоткрыть'}} тикет</button>
+                <button id="clopen-cancel-btn" type="reset">Отмена</button>
+            </div>
+        </form>
+    </dialog>
+@endcan
 <script>
     $(document).ready(function() {
         $('#link-archive').on('click', function(e) {
@@ -114,6 +136,10 @@
             e.preventDefault();
             $('#delete-dialog')[0].showModal();
         });
+        $('#link-clopen').on('click', function(e) {
+            e.preventDefault();
+            $('#clopen-dialog')[0].showModal();
+        })
         $('#archive-cancel-btn').on('click', function(e) {
             e.preventDefault();
             $('#archive-dialog')[0].close();
@@ -122,5 +148,9 @@
             e.preventDefault();
             $('#delete-dialog')[0].close();
         });
+        $('#clopen-cancel-btn').on('click', function(e) {
+            e.preventDefault();
+            $('#clopen-dialog')[0].close();
+        })
     });
 </script>
