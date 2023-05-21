@@ -14,16 +14,25 @@
     <form method="POST" class="bordered" action="/tickets" enctype="multipart/form-data">
         @csrf
             <label for="subject" class="required">Тема тикета</label>
+            @error('subject')
+                <p class="error">{{$message}}</p>
+            @enderror
             <input type="text" name="subject" value="{{old('subject')}}"/>
             <label for="content" class="required">Содержание тикета</label>
+            @error('content')
+                <p class="error">{{$message}}</p>
+            @enderror
             <textarea placeholder="Опишите подробно возникшую у Вас проблему…" name="content"
             >{{old('content')}}</textarea>
-            <label for="attachments">При необходимости прикрепите файлы</label>
+            <label for="attachments">
+                <abbr title="До 5 файлов до 5 МБ каждый. Разрешённые форматы файлов: JPG, JPEG, PNG, GIF, BMP, DOC, DOCX, TXT, LOG, PDF, RTF">
+                    При необходимости прикрепите файлы
+                </abbr>
+            </label>
             <input type="file" name="attachments[]"
             accept="image/*,text/plain"/>
             <button type="submit">Создать</button>
     </form>
-
     <script>
         const fileLimit = 5;
         var fileAmount = 1;

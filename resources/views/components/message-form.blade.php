@@ -7,7 +7,11 @@
     <label for="content">Ответить</label>
     <p class="error" id="textarea-error" style="display:none">test</p>
     <textarea name="content" required>{{old('content')}}</textarea>
-    <label for="files">Прикрепить файлы</label>
+    <label for="files">
+        <abbr title="До 5 файлов до 5 МБ каждый. Разрешённые форматы файлов: JPG, JPEG, PNG, GIF, BMP, DOC, DOCX, TXT, LOG, PDF, RTF">
+            При необходимости прикрепите файлы
+        </abbr>
+    </label>
     <p class="error" id="files-error" style="display:none;"></p>
     <input type="file" name="files[]" accept="image/*,text/plain">
     <button id="submit-btn">Отправить</button>

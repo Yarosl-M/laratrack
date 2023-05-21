@@ -17,13 +17,20 @@ class CreateTicketRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             'subject' => 'bail|required|max:100',
             'content' => 'bail|required|max:1000',
             'files' => 'nullable|bail|array|max:5',
             'files.*' => 'bail|max:5120|mimes:jpg,jpeg,png,gif,bmp,doc,docx,txt,log,pdf,rtf',
+        ];
+    }
+    public function messages(): array {
+        return [
+            'subject.required' => 'Это поле обязательно для заполнения',
+            'subject.max' => 'Длина темы до 100 символов',
+            'content.required' => 'Это поле обязательно для заполнения',  
+            'content.max' => 'Длина сообщения до 1000 символов'  
         ];
     }
 }
