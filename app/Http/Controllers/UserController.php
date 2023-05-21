@@ -95,7 +95,7 @@ class UserController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
-        return back()->withErrors(['auth' => 'Неправильные учётные данные']);
+        return back()->withErrors(['auth' => 'Неправильные учётные данные'])->withInput();
     }
     public function logout(Request $request) {
         Auth::logout();

@@ -20,7 +20,6 @@ class AddMessageRequest extends FormRequest
         return [
             'content' => 'bail|required|max:1000',
             'files' => 'nullable|bail|array|max:5',
-            // idk why would i need gifs and lots of other stuff but that works i guess
             'files.*' => 'bail|max:5120|mimes:jpg,jpeg,png,gif,bmp,doc,docx,txt,log,pdf,rtf',
         ];
     }

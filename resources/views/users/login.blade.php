@@ -6,11 +6,17 @@
     <form class="bordered" action="/users/authenticate" method="POST">
         @csrf
         @error('auth')
-        <p class="error">{{$message}}</p>
+            <p class="error">{{$message}}</p>
         @enderror
         <label for="email">E-mail</label>
+        @error('email')
+            <p class="error">{{$message}}</p>
+        @enderror
         <input type="text" value="{{old('email')}}" name="email"/>
         <label for="password">Пароль</label>
+        @error('password')
+            <p class="error">{{$message}}</p>
+        @enderror
         <input type="password" name="password"/>
         <div>
             <button type="submit">Войти</button>

@@ -15,11 +15,16 @@ class AuthenticateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             'email' => 'required',
             'password' => 'required',
+        ];
+    }
+    public function messages(): array {
+        return [
+            'email.required' => 'Это обязательное поле',
+            'password.required' => 'Это обязательное поле',
         ];
     }
 }
