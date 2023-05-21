@@ -25,8 +25,8 @@ class ChangePasswordRequest extends FormRequest
     }
     public function messages(): array {
         return [
-            'current_password.required' => 'Это обязательное поле',
-            'password.required' => 'Это обязательное поле',
+            'current_password.required' => 'Это поле обязательно для заполнения',
+            'password.required' => 'Это поле обязательно для заполнения',
             'password.min' => 'Пароль не должен быть короче 6 символов',
             'password.max' => 'Пароль не должен быть длиннее 40 символов',
             'password.regex' => 'Пароль содержит недопустимые символы',

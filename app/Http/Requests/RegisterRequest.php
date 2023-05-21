@@ -38,7 +38,7 @@ class RegisterRequest extends FormRequest
             'username.max' => 'Логин должен быть не длиннее 40 символов',
             'username.unique' => 'Такой логин уже занят',
             'name.max' => 'Имя должно быть не длиннее 100 символов',
-            'password.required' => 'Это обязательное поле',
+            'password.required' => 'Это поле обязательно для заполнения',
             'password.min' => 'Пароль не должен быть короче 6 символов',
             'password.max' => 'Пароль не должен быть длиннее 40 символов',
             'password.regex' => 'Пароль содержит недопустимые символы',

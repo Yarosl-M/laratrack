@@ -23,8 +23,8 @@ class AuthenticateRequest extends FormRequest
     }
     public function messages(): array {
         return [
-            'email.required' => 'Это обязательное поле',
-            'password.required' => 'Это обязательное поле',
+            'email.required' => 'Это поле обязательно для заполнения',
+            'password.required' => 'Это поле обязательно для заполнения',
         ];
     }
 }
