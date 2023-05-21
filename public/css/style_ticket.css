@@ -20,7 +20,7 @@ ul li {
     gap: 1rem;
 }
 .message, .action, .msg-form {
-    width: 90%;
+    flex: 1 1 0;
     border-style: solid;
     border-width: 2px;
     border-color: #aaa;
@@ -28,6 +28,7 @@ ul li {
     padding: 0.5rem 1rem;
     margin-left: 1rem;
     margin-bottom: 1.5rem;
+    overflow-wrap: anywhere;
 }
 .message:nth-child(even), .action:nth-child(even) {
     background-color: #eee;
@@ -36,7 +37,7 @@ ul li {
     color: #333;
 }
 .ticket-items {
-    padding: 0;
+    padding: 1rem;
     margin: 0;
 }
 .attachments-header {
