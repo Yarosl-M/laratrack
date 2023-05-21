@@ -35,4 +35,6 @@ body, html {
 .error {
     color: #d00;
     font-size: 0.9rem;
+    margin-top: 0;
+    margin-bottom: 0;
 }
