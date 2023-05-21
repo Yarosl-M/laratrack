@@ -103,3 +103,8 @@ ul li {
     height:10rem;
     width: 50%;
 }
+
+.error {
+    margin-top: 0;
+    margin-bottom: 0;
+}

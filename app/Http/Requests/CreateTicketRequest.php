@@ -23,7 +23,7 @@ class CreateTicketRequest extends FormRequest
             'subject' => 'bail|required|max:100',
             'content' => 'bail|required|max:1000',
             'files' => 'nullable|bail|array|max:5',
-            'files.*' => 'bail|max:5120|mimes:jpg,jpeg,png,gif,bmp,doc,docx,txt,pdf,rtf',
+            'files.*' => 'bail|max:5120|mimes:jpg,jpeg,png,gif,bmp,doc,docx,txt,log,pdf,rtf',
         ];
     }
 }
