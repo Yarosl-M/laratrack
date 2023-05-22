@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function() {
     Route::post('/tickets/{ticket}/archive', [TicketController::class, 'move_to_archive']);
     Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy']);
 
+    Route::post('/tickets/{ticket}/rate', [TicketController::class, 'rate']);
+
     Route::post('/tickets', [TicketController::class, 'store']);
 
     Route::post('/logout', [UserController::class, 'logout']);

@@ -202,4 +202,15 @@ class TicketController extends Controller
             'title' => $titleSubject,
         ]);
     }
+
+    public function rate(Request $request, Ticket $ticket) {
+        if ($request->user()->id !== $ticket->client_id
+        || $ticket->client_rating !== null || !$ticket->isRateable()) return back();
+        $fields = $request->validate([
+            'rating' => 'integer|numeric|between:1,5'
+        ]);
+        $rating = intval($fields['rating']);
+        $this->ticketService->sendFeedback($ticket->id, $request->user(), $rating);
+        return back();
+    }
 }

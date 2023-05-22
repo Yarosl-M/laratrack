@@ -109,3 +109,39 @@ ul li {
     margin-top: 0;
     margin-bottom: 0;
 }
+
+#rating-form {
+    width: fit-content;
+    margin: 1rem;
+    padding: 1rem;
+}
+#rating-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 0.1rem;
+    flex-grow: 1;
+}
+.rating-input {
+    display: none;
+}
+.rating-star {
+    display: block;
+    cursor: pointer;
+    margin-top: auto;
+    width: 2rem;
+    height: 2rem;
+    background-image:url('/assets/star.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.rating-star:hover, /* the one under cursor */
+.rating-star:hover ~ .rating-star, /* the ones before it */
+.rating-input:checked ~ .rating-star, /* the ones before the checked one */
+.rating-input:checked ~ .rating-star ~ .rating-star /* ??? */
+ {
+    background-image:url('/assets/star_filled.svg');
+}
+#rating-submit {
+    width: fit-content;
+}

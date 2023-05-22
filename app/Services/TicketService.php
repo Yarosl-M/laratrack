@@ -64,7 +64,7 @@ class TicketService {
     
     // again, the array is just makeshift dtos for now
     // anyway, authorization is actually done in a controller 
-    // but this thing is very stupid anyway
+    // stupid function i hate it
     public function updateTicket(string $id, array $updateTicket): Ticket {
         $ticket = Ticket::find($id);
         $user = Auth::user();
@@ -89,7 +89,6 @@ class TicketService {
             $this->actionService->changePriority($ticket, $user, $old, $new);
             $ticket->priority_id = $new->id;
         }
-        // this is awful and this is the exact opposite of what a service class is intended to do
         if (array_key_exists('is_open', $updateTicket)) {
          // close ticket
             if ($updateTicket['is_open'] == false) {
@@ -169,7 +168,7 @@ class TicketService {
     }
 
     public function sendFeedback(string $id, User $user, int $rating) {
-        if ($rating < 0 || $rating > 5) throw new RangeException('Rating should be in range [0, 5]');
+        if ($rating < 1 || $rating > 5) throw new RangeException('Rating should be in range [1, 5]');
         $ticket = Ticket::find($id);
         $this->actionService->sendFeedback($ticket, $user, $rating);
 
