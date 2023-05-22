@@ -2,24 +2,36 @@
 
 namespace App\Services;
 
+use Exception;
+use Carbon\Carbon;
+use App\Models\Tag;
+use RangeException;
+use App\Models\User;
+use App\Models\Ticket;
 use App\Models\Message;
 use App\Models\Priority;
-use App\Models\Tag;
-use App\Models\Ticket;
-use App\Models\User;
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
-use RangeException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TicketService {
     public function __construct(private TicketActionService $actionService) {}
 
+    private function paginateCollection($items, $perPage = 10, $page = null, $options = []) {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        $paginator = new LengthAwarePaginator($items->forPage($page, $perPage),
+        $items->count(), $perPage, $page, $options);
+        return $paginator->withPath(request()->url());
+    }
+
     public function getAll(bool $active = true, string|null $sortBy = 'latest',
-    string|null $search = null, string|null $status = 'all', array|null $tags) {
+    string|null $search = null, string|null $status = 'all', array|null $tags,
+    User $user) {
         $query = ($active) ? (Ticket::active()) : (Ticket::archived());
         $query = match ($sortBy) {
             'latest' => $query->latest(),
@@ -41,7 +53,12 @@ class TicketService {
                 });
             }
         }
-        return $query->paginate(10);
+        $tickets = $query->get();
+        $authorized = $tickets->filter(function(Ticket $ticket) use ($user) { 
+            return ($user->can('view', $ticket)); });
+        $paginated = $this->paginateCollection($authorized);
+        return $paginated;
+        // return $query->paginate(10);
     }
     
     // createTicket also contains the text of the first message and other info but only the user-supplied

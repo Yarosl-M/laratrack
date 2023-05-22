@@ -13,7 +13,7 @@
             @endforeach
         </div>
         <div class="pagination-wrapper">
-            {{$tickets->links()}}
+            {{$tickets->withQueryString()->links()}}
         </div>    
     </section>
     <section class="sidebar">

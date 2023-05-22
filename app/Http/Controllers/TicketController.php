@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddMessageRequest;
-use App\Http\Requests\CreateTicketRequest;
+use Carbon\Carbon;
+use App\Models\Tag;
+use App\Models\User;
+use App\Models\Ticket;
 use App\Models\Message;
 use App\Models\Priority;
-use App\Models\Tag;
-use App\Models\Ticket;
-use App\Models\User;
-use App\Services\TicketService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Services\TicketService;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
+use App\Http\Requests\AddMessageRequest;
+use App\Http\Requests\CreateTicketRequest;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TicketController extends Controller
 {
@@ -26,7 +29,11 @@ class TicketController extends Controller
         $search = $request->query('search', null);
         $isOpen = $request->query('status', 'all');
         $tagIds = $request->query('tags', null);
-        $tickets = $this->ticketService->getAll($active, $sortBy, $search, $isOpen, $tagIds);
+
+        // should return a paginator still
+        $tickets = $this->ticketService->getAll($active, $sortBy, $search,
+            $isOpen, $tagIds, $request->user());
+
         return view('tickets.index', [
             'tickets' => $tickets, 'title' => 'Просмотр тикетов', 'tags' => Tag::get(),
             'queryData' => [
