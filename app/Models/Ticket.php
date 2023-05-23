@@ -24,8 +24,9 @@ class Ticket extends Model
     use HasFactory;
 
     public function isRateable(): bool {
-        return (!$this->is_open)
-        || $this->created_at->floatDiffInDays(Carbon::now()) >= 7.0;
+        return ((!$this->is_open)
+        || $this->created_at->floatDiffInDays(Carbon::now()) >= 7.0)
+        && $this->archived_at === null;
     }
 
     public function scopeActive($query) {
