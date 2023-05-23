@@ -80,8 +80,6 @@ class TicketService {
     }
     
     // again, the array is just makeshift dtos for now
-    // anyway, authorization is actually done in a controller 
-    // stupid function i hate it
     public function updateTicket(string $id, array $updateTicket): Ticket {
         $ticket = Ticket::find($id);
         $user = Auth::user();
@@ -159,10 +157,6 @@ class TicketService {
     }
 
     public function addMessage(array $messageAttr): Message {
-        // ticket id (str)
-        // also user id (str)
-        // content (str)
-        // files (arr of str)
         $m = new Message;
         $m->ticket_id = $messageAttr['ticket_id'];
         $m->user_id = $messageAttr['user_id'];

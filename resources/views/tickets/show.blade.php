@@ -6,7 +6,6 @@
     use App\Models\ThreadAction;
 @endphp
 @props(['ticket', 'entries'])
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <x-layout :stylesheets="$sheets" :title="$title">
     <section class="main" style="margin:0;">
         <h1>

@@ -26,7 +26,8 @@
             </section>
         </div>
         @if (false)
-            @can('update', App\Models\Tag)
+            @can('update', App\Models\Tag::class)
+
                 <div id="tags-tab" style="display:none">
                     <h1>Управление тегами</h1>
                     <section class="tags-tab-main">
@@ -36,7 +37,7 @@
                                     $usages = $tag->tickets->count();
                                 @endphp
                                 <x-tag-dashboard-card :tag="$tag" :usages="$usages"/>
-                            @endfos reach
+                            @endforeach
                             <a href="#" class="no-underline hover-underline" id="add-tag-link">Добавить тег…</a>
                         </div>
                     </section>
