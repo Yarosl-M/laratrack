@@ -66,5 +66,9 @@ class UserApiController extends Controller
             'html' => $component->render()
         ]);
     }
-    // where's delete????? 
+    public function destroy(User $user) {
+        $this->authorize('delete', $user);
+        $user->delete();
+        return response()->json(['message' => 'Учётная запись успешно удалена']);
+    }
 }

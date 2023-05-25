@@ -134,9 +134,9 @@ dialog .dialog-buttons {
     flex-direction: row;
     justify-content: space-evenly;
 }
-#add-tag-link {
+/* #add-tag-link {
     align-self: flex-end;
-}
+} */
 .tag-option {
     color: #333;
     cursor: pointer;
@@ -149,4 +149,13 @@ dialog .dialog-buttons {
 }
 .tag-delete:hover {
     color: #a00;
+}
+#add-tag-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+#new-tag-name {
+    margin-right: auto;
 }

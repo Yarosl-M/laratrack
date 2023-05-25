@@ -12,7 +12,7 @@
                 <div class="bordered user-list-wrapper user-tab-item">
                     <h3>Пользователи системы</h3>
                     <div class="user-list">
-                        @foreach ($users->except(['id', $user->id]) as $u)
+                        @foreach ($users->except(['id', $user->id])->sortBy('id') as $u)
                         <div class="user-card-wrapper" id="{{$u->id}}">
                             <div class="user-card">
                                 <x-user-pfp :user="$u" size="2"/>
@@ -25,20 +25,27 @@
                 <p id="users-prompt">Выберите пользователя из списка слева, чтобы настроить его права доступа…</p>
             </section>
         </div>
-        @if (false)
+        @if (true)
             @can('update', App\Models\Tag::class)
-
+                <template id="tag-form-template">
+                    {{-- maybe not required? --}}
+                </template>
                 <div id="tags-tab" style="display:none">
                     <h1>Управление тегами</h1>
                     <section class="tags-tab-main">
                         <div class="tag-list bordered">
-                            @foreach ($tags as $tag)
+                            @foreach ($tags->sortBy('id') as $tag)
                                 @php        
                                     $usages = $tag->tickets->count();
                                 @endphp
                                 <x-tag-dashboard-card :tag="$tag" :usages="$usages"/>
                             @endforeach
-                            <a href="#" class="no-underline hover-underline" id="add-tag-link">Добавить тег…</a>
+                            <div id="add-tag-section">
+                                <input type="text" id="new-tag-name" placeholder="Введите имя тега…" style="visibility:hidden">                                
+                                <a href="#" class="no-underline hover-underline" id="add-tag-link">Добавить тег…</a>
+                                <a href="#" class="no-underline hover-underline" style="display:none" id="save-new-tag-link">Сохранить</a>
+                                <a href="#" class="no-underline hover-underline" style="display:none" id="cancel-new-tag-link">Отмена</a>
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -47,7 +54,7 @@
     </div>
     <div class="sidebar">
         <a href="#" class="sidebar-link" id="users-tab-link">Управление пользователями</a>
-        {{-- <a href="" class="sidebar-link" id="tags-tab-link">Управление тегами</a> --}}
+        <a href="" class="sidebar-link" id="tags-tab-link">Управление тегами</a>
     </div>
     {{-- scripts for users tab --}}
     <script>
@@ -60,12 +67,25 @@
             $('#' + id + ' *').css('font-weight', '');
             $('#' + id).css('background-color', ''); 
         }
+        function addClosures(id) {
+            // ???
+        }
         // add all of the necessary event listeners to a card
         function initCard(id) {
             // there's some black magic happening around which I will need to get to later
             // basically, for some reason the ids attached to those event listeners below
             // might unexpectedly change when you're switching between the users
-            // console.log('init card ' + id);
+            // dayum turns out it probably didn't remove the previous event listeners!
+            // whahahha
+            console.log('init card ' + id);
+            $('#submit-user-settings').off('click');
+            $('#deactivate-link').off('click');
+            $('#activate-link').off('click');
+            $('#delete-user-link').off('click');
+            $('#deactivate-submit').off('click');
+            $('#activate-submit').off('click');
+            $('#delete-submit').off('click');
+
             $('#submit-user-settings').on('click', {
                 id: id
             }, submitUserForm);
@@ -99,7 +119,9 @@
                 $('.user-dashboard-card').replaceWith(html);
             initCard(id);
         }
-
+        function errorAlert() {
+            alert('При обработке Вашего запроса произошла ошибка. Пожалуйста, повторите попытку позже.');
+        }
         function openUserCard(id) {
             // hide the previous form if there was any as well
             if ($('.user-dashboard-card').length != 0)
@@ -150,6 +172,9 @@
                     var response = data;
                     alert(response.message);
                 },
+                error: function(xhr, status, exception) {
+                    errorAlert();
+                }
             }).always(function() {
                 setTimeout(() => { $('#submit-user-settings').prop('disabled', false); }, 500);
             });
@@ -173,6 +198,10 @@
                     alert(response);
                     addCard(id, html);
                     $('#deactivate-dialog')[0].close();
+                    $('html,body').scrollTop(0);
+                },
+                error: function(xhr, status, exception) {
+                    errorAlert();
                 }
             }).always(function() {
                 $('#deactivate-dialog button').prop('disabled', false);
@@ -196,6 +225,10 @@
                     alert(response);
                     addCard(id, html);
                     $('#activate-dialog')[0].close();
+                    $('html,body').scrollTop(0);
+                },
+                error: function(xhr, status, exception) {
+                    errorAlert();
                 }
             }).always(function() {
                 $('#activate-dialog button').prop('disabled', false);
@@ -217,9 +250,14 @@
                     alert(response);
                     $(id).remove();
                     $('.user-dashboard-card').remove();
+                    $('.user-card-wrapper#' + id).remove();
                     $('#delete-dialog')[0].close();
                     $('#users-prompt').text('Выберите пользователя из списка слева, чтобы настроить его права доступа…');
                     $('#users-prompt').css('display', '');
+                    $('html,body').scrollTop(0);
+                },
+                error: function(xhr, status, exception) {
+                    errorAlert();
                 }
             }).always(function() {
                     $('#delete-dialog button').prop('disabled', false);
@@ -259,7 +297,7 @@
             });
     </script>
     {{-- scripts for tags tab --}}
-    {{-- <script>
+    <script>
         let textField = (id) => $('input[name="' + id + '"]');
         let tagName = (id) => $('#' + id + ' .tag-name');
         let editTagBtn = (id) => $('#' + id + ' .tag-edit');
@@ -272,6 +310,12 @@
             $('.tag-wrapper#' + id + ' .tag-delete').on('click', deleteTag.bind(null, id));
         }
         function openEditForm(id) {
+            idList.forEach(element => {
+                if (element != id) {
+                    cancelTagEdit(element);
+                }
+            });
+            closeNewForm();
             tagName(id).css('display', 'none');
             textField(id).val(tagName(id).text()); textField(id).css('display', '');
             editTagBtn(id).css('display', 'none');
@@ -285,24 +329,38 @@
             cancelEditBtn(id).css('visibility', 'hidden');
             editTagBtn(id).css('display', '');
         }
+        let stuff = undefined;
         function saveTagEdit(id) {
-            var tagData = {
-                name: textField(id).val()
-            }
+            var tagForm = new FormData();
+            var newName = textField(id).val();
+            tagForm.set('name', newName);
+            // ha!
+            tagForm.set('_method', 'PUT');
             $.ajax({
                 url: '/api/dashboard/tags/' + id,
-                method: 'PUT',
-                data: JSON.stringify(tagData),
+                method: 'POST',
+                data: tagForm,
                 dataType: 'json',
                 processData: false,
                 contentType: false,
                 success: function(data) {
-                    // do something
+                    alert('Тег успешно изменён');
+                    $('#' + id + ' .tag-name').text(newName);
                 },
                 error: function(xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
+                    switch (xhr.status) {
+                        case 422:
+                            if (xhr.responseJSON.message.includes('required')) {
+                                alert('Ошибка: название тега обязательно для заполнения');
+                            }
+                            else if (xhr.responseJSON.message.includes('taken')) {
+                                alert('Ошибка: такое название тега уже занято');
+                            }
+                            break;
+                        default:
+                            alert('Произошла неизвестная ошибка. Пожалуйста, повторите попытку позже.');
+                            break;
+                    }
                 }
             }).always(function() {
                 cancelTagEdit(id);
@@ -327,15 +385,81 @@
         }
         function createTag(id) {
         }
+        function openNewForm() {
+            $('#new-tag-name').css('visibility', '');
+            $('#add-tag-link').css('display', 'none');
+            $('#save-new-tag-link').css('display', '');
+            $('#cancel-new-tag-link').css('display', '');
+            idList.forEach(element => cancelTagEdit(element));
+        }
+        function closeNewForm() {
+            $('#new-tag-name').css('visibility', 'hidden');
+            $('#add-tag-link').css('display', '');
+            $('#save-new-tag-link').css('display', 'none');
+            $('#cancel-new-tag-link').css('display', 'none');
+            $('#new-tag-name').val('');
+        }
+        function createNewTag() {
+            let fd = new FormData();
+            let tagName = $('#new-tag-name').val();
+            fd.set('name', tagName);
+            $.ajax({
+                url: '/api/dashboard/tags',
+                method: 'POST',
+                data: fd,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    alert(data.message);
+                    let html = data.html;
+                    let newId = data.id;
+                    $('#add-tag-section').before(html);
+                    bindTagEvents(newId);
+                },
+                error: function(xhr, status, error) {
+                    switch (xhr.status) {
+                        case 422:
+                            if (xhr.responseJSON.message.includes('required')) {
+                                alert('Ошибка: название тега обязательно для заполнения');
+                            }
+                            else if (xhr.responseJSON.message.includes('taken')) {
+                                alert('Ошибка: такое название тега уже занято');
+                            }
+                            break;
+                        default:
+                            alert('Произошла неизвестная ошибка. Пожалуйста, повторите попытку позже.');
+                            break;
+                    }
+                }
+            }).always(function() {
+                cancelTagEdit();
+                closeNewForm();
+            });
+        }
+        let idList = [];
         $(document).ready(function() {
             $('.tag-wrapper').each(function() {
                 var id = $(this).attr('id');
+                idList.push(id);
                 bindTagEvents(id);
             });
+            $('#add-tag-link').on('click', function(e) {
+                e.preventDefault();
+                openNewForm();
+            });
+            $('#save-new-tag-link').on('click', function(e) {
+                e.preventDefault();
+                createNewTag();
+            })
+            $('#cancel-new-tag-link').on('click', function(e) {
+                e.preventDefault();
+                closeNewForm();
+            })
         });
-    </script> --}}
+    </script>
     {{-- global (e. g. changing tabs) --}}
-    {{-- <script>
+    <script>
         function showTab(tabId) {
             $('[id$="-tab"]').css('display', 'none');
             $('#' + tabId).css('display', '');
@@ -350,7 +474,7 @@
                 showTab('tags-tab');
             });
         }); 
-    </script> --}}
+    </script>
 </x-layout>
 <dialog id="deactivate-dialog">
     <form action="/api/dashboard/users" method="dialog" id="deactivate-form">

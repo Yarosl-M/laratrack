@@ -10,7 +10,7 @@ class TagApiController extends Controller
 {
     public function update(Request $request, Tag $tag) {
         $formFields = $request->validate([
-            'name' => ['bail', 'required', Rule::unique('tags')->ignore($tag->id)]
+            'name' => ['required', Rule::unique('tags')->ignore($tag->id)]
         ]);
         $tag->name = $formFields['name'];
         $tag->save();
@@ -22,6 +22,24 @@ class TagApiController extends Controller
         $tag->delete();
         return response()->json([
             'message' => 'Тег успешно удалён.'
+        ]);
+    }
+    public function store(Request $request) {
+        $formFields = $request->validate([
+            'name' => ['required', 'unique:tags', 'max:100']
+        ]);
+        $tag = new Tag;
+        $tag->name = $formFields['name'];
+        $tag->save();
+        $component = view('components.tag-dashboard-card', [
+            'tag' => $tag,
+            'usages' => $tag->tickets->count()
+        ]);
+        $html = $component->render();
+        return response()->json([
+            'message' => 'Тег успешно создан',
+            'id' => $tag->id,
+            'html' => $html,
         ]);
     }
 }
