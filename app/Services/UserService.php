@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserService {
-    public function __construct(private PermissionService $permissionService) {}
+    public function __construct() {}
 
     public function create(array $createUser): User {
         $u = new User();
