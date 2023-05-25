@@ -71,7 +71,7 @@ class TicketController extends Controller
         $this->authorize('delete', $ticket);
         $archive = $ticket->archived_at != null;
         $ticket->delete();
-        return redirect($archive ? '/tickets/archive' : 'tickets');
+        return redirect($archive ? '/tickets/archive' : '/tickets');
     }
 
     public function close(Request $request, Ticket $ticket) {
