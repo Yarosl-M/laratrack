@@ -3,7 +3,7 @@
     @can('view', $action->user)
         <a class="user-pfp-link" href="{{url('/users', [$action->user_id])}}">
     @endcan
-    <x-user-pfp :user="($ticket->user)" :size="3"/>
+    <x-user-pfp :user="($action->user)" :size="3"/>
     @can('view', $action->user)
         </a>
     @endcan
