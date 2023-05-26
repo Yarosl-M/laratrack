@@ -367,8 +367,9 @@
             });
         }
         function deleteTag(id) {
-            var usageCount = $('#' + id).attr('data-usages');
-            var msg = '';
+            let deletedId = id;
+            let usageCount = $('#' + id).attr('data-usages');
+            let msg = '';
             if (usageCount > 0) {
                 msg += 'Этот тег был использован в тикетах ';
                 msg += usageCount;
@@ -380,7 +381,21 @@
             }
             msg += 'Вы уверены, что хотите удалить этот тег?'
             if (confirm(msg)) {
-                // blah blah delete as usual
+                $.ajax({
+                    url: '/api/dashboard/tags/' + id,
+                    method: 'DELETE',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function(data) {
+                        alert('Тег успешно удалён');
+                        $('.tag-wrapper#' + deletedId).remove();
+                        idList.splice(idList.indexOf(deletedId), 1);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('При обработке Вашего запроса произошла ошибка. Пожалуйста, повторите попытку позже.');
+                    }
+                }).always();
             }
         }
         function createTag(id) {
@@ -414,6 +429,7 @@
                     alert(data.message);
                     let html = data.html;
                     let newId = data.id;
+                    idList.push(newId);
                     $('#add-tag-section').before(html);
                     bindTagEvents(newId);
                 },

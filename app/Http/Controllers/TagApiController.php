@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 class TagApiController extends Controller
 {
     public function update(Request $request, Tag $tag) {
+        $this->authorize('update', Tag::class);
         $formFields = $request->validate([
             'name' => ['required', Rule::unique('tags')->ignore($tag->id)]
         ]);
@@ -19,12 +20,14 @@ class TagApiController extends Controller
         ]);
     }
     public function destroy(Tag $tag) {
+        $this->authorize('delete', $tag);
         $tag->delete();
         return response()->json([
             'message' => 'Тег успешно удалён.'
         ]);
     }
     public function store(Request $request) {
+        $this->authorize('create', Tag::class);
         $formFields = $request->validate([
             'name' => ['required', 'unique:tags', 'max:100']
         ]);

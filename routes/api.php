@@ -33,4 +33,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::put('/dashboard/tags/{tag}', [TagApiController::class, 'update']);
     // create tag
     Route::post('/dashboard/tags', [TagApiController::class, 'store']);
+    // delete tag
+    Route::delete('/dashboard/tags/{tag}', [TagApiController::class, 'destroy']);
 });
