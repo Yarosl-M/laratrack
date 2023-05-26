@@ -28,6 +28,8 @@ class UserService {
 
         $u->type = UserType::Client->value;
 
+        $u->save();
+
         $permissions = Permission::where('class', 'client')->pluck('id');
         $u->permissions()->sync($permissions);
 
