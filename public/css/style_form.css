@@ -50,6 +50,11 @@ form button {
     cursor: pointer;
 }
 
+form button:disabled {
+    cursor: initial;
+    background-color: var(--secondary-color);
+}
+
 .error {
     display: inline-block;
     width: 80%;

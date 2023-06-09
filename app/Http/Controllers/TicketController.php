@@ -14,6 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\Paginator;
 use App\Http\Requests\AddMessageRequest;
 use App\Http\Requests\CreateTicketRequest;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class TicketController extends Controller
